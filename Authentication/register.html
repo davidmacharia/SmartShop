@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>maziwa</title>
+  <link rel="stylesheet" href="index.css">
+  <script src="Action.js"></script>
+</head>
+<body >
+  <form id ="register" >
+     <div class="container">
+      <p>🛒 Shop</p>
+      <div class="logo"><p>At</p></div>
+      <p >Home</p>
+      </div>
+      <h2 >Create an Account</h2>
+      <div id ="phaseone">
+        <div id = "error" class="error"></div>
+      <div class="input-group">
+      <label for="username" >Username</label>
+      <input type="username" id="username" name="username"  class="input-full">
+      </div>
+      <div class="input-group" >
+      <label for="email" class="label">Email</label>
+      <input type="email" id="email" name="email" style="width:90%;" placeholder="example@gmail.com" class="input-full">
+      </div>
+       <div class="input-group" >
+      <select name ="CountryCode">
+        <option>+254</option>
+        <option>+171</option>
+      </select>
+      </div>
+      <div class="input-group" style = "margin-left:100px;width:66%; margin-top: -64.5px;">
+      <input type="text" placeholder="Enter phone Number" name="phone" class="input-phone">
+      </div>
+      <div class="button">
+        <input type="button" id = "nextphase" value="Next" class="btn-next" onclick = "Next()">
+    </div>
+    </div>
+    <div id ="phasetwo" style="display: none;">
+      <div id = "error2" class="error"></div>
+<div class="input-group">
+      <label for="password" >Password</label>
+      <input type="password" id="password" name="password"  placeholder="Enter your password" class="input-full">
+      </div>
+      
+      <div class="input-group">
+      <label for="password" >Confirm Password</label>
+      <input type="password" id="confirm" name="confirmpassword"  placeholder="Confirm password" class="input-full">
+      </div>
+      <div class="button">
+        <input type="button" class="btn-back" value="Back" onclick = "Back()">
+    </div>
+       <div class="button">
+        <input type="submit"  value="Register">
+    </div>
+    </div>
+      
+         <div class="links center-link">
+      <p>Have an account? <a  href ="index.html" class="link-login">Login</a></p>
+      </div>
+      
+      </div>
+    </div>
+  </form>
+  <script>
+    function Next(){
+      document.getElementById("phaseone").style.display ="none";
+      document.getElementById("phasetwo").style.display ="";
+    }
+        function Back(){
+      document.getElementById("phaseone").style.display ="";
+      document.getElementById("phasetwo").style.display ="none";
+    }
+  </script>
+</body>
+</html>

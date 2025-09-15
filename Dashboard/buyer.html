@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buyer Dashboard</title>
+  <style>
+    body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f3f5f8;
+  color: #333;
+}
+
+.buyer-header {
+  background-color: #2d3436;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+.buyer-header nav button {
+  margin: 0 8px;
+  padding: 8px 14px;
+  background-color: #00cec9;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+}
+
+.buyer-main {
+  padding: 20px;
+}
+
+.order-overview .order-card {
+  background-color: white;
+  margin-bottom: 20px;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+}
+
+.order-card button {
+  padding: 8px 12px;
+  background-color: #0984e3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.recommendations {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.product-card {
+  background-color: white;
+  width: 200px;
+  padding: 15px;
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+}
+
+.product-card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.product-card button {
+  padding: 8px 12px;
+  background-color: #6c5ce7;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+  </style>
+</head>
+<body>
+  <header class="buyer-header">
+    <h1>Welcome, Buyer</h1>
+    <nav>
+      <button>Orders</button>
+      <button>Wishlist</button>
+      <button>Messages</button>
+      <button>Settings</button>
+    </nav>
+  </header>
+
+  <main class="buyer-main">
+    <section class="order-overview">
+      <h2>Your Orders</h2>
+      <div class="order-card">
+        <h3>Wireless Mouse</h3>
+        <p>Status: Shipped</p>
+        <button>Track</button>
+      </div>
+      <div class="order-card">
+        <h3>Bluetooth Speaker</h3>
+        <p>Status: Processing</p>
+        <button>Cancel</button>
+      </div>
+    </section>
+
+    <section class="recommendations">
+      <h2>Recommended for You</h2>
+      <div class="product-card">
+        <img src="sec.jpg" alt = "Smartphone" />
+        <p>Smartphone – $299</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="sec.jpg" alt="Laptop" />
+        <p>Laptop – $849</p>
+        <button>Add to Cart</button>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
+

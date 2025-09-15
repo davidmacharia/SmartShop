@@ -1,0 +1,335 @@
+
+  body, html {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    background: #f5f7fa;
+    color: #333;
+  }
+
+  /* ======================= EDIT MODAL ======================= */
+  .edit-modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+
+  .edit-content {
+    background: #fff;
+    padding: 25px 30px;
+    border-radius: 15px;
+    width: 400px;
+    max-width: 95%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    position: relative;
+    animation: slideUp 0.3s ease-in-out;
+  }
+
+  @keyframes slideUp { from {transform: translateY(40px); opacity:0;} to {transform: translateY(0); opacity:1;} }
+
+  .edit-content h2 {
+    margin: 0;
+    text-align: center;
+    font-size: 1.5rem;
+    color: #2c3e50;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+  }
+
+  .edit-content label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #555;
+  }
+
+  .edit-content input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border 0.2s, box-shadow 0.2s;
+  }
+
+  .edit-content input:focus {
+    border: 1px solid #4CAF50;
+    outline: none;
+    box-shadow: 0 0 6px rgba(76,175,80,0.4);
+  }
+
+  .edit-content button {
+    padding: 12px;
+    background: linear-gradient(135deg, #4CAF50, #2e7d32);
+    border: none;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.3s;
+  }
+
+  .edit-content button:hover {
+    background: linear-gradient(135deg, #45a049, #256d27);
+    transform: scale(1.03);
+  }
+
+  .close-edit {
+    position: absolute;
+    top: 12px; right: 15px;
+    font-size: 1.6rem;
+    cursor: pointer;
+    color: #888;
+    transition: color 0.2s;
+  }
+
+  .close-edit:hover { color: #f44336; }
+
+  /* ======================= DASHBOARD ======================= */
+  .top {
+    position: sticky;
+    top: 0;
+    height: 7vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(45deg, #6dd5ed, #2193b0);
+    padding: 0 20px;
+    z-index: 1000;
+    color: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  header {
+    margin-top: 0vh;
+  }
+
+  header .card {
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: white;
+    border-radius: 0 12px 0 0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    padding: 20px;
+  }
+
+  .card img {
+    width: 7em; height: 7em;
+    border-radius: 50%;
+    border: 3px solid #2193b0;
+    margin-bottom: 10px;
+  }
+
+  nav {
+    width: 300px;
+    height: 100%;
+    position: absolute;
+    top:42vh;
+    background-color: white;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #eee;
+  }
+
+  nav button {
+    text-align: left;
+    height: 50px;
+    padding: 12px 20px;
+    border: none;
+    background: none;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s;
+  }
+
+  nav button:hover {
+    background: #2193b0;
+    color: white;
+  }
+
+  .dashboard-main {
+    position: absolute;
+    top: 7vh;
+    left: 300px;
+    right: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .metrics {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  }
+
+  .metrics .card {
+    flex: 1;
+    text-align: center;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    padding: 20px;
+    border-radius: 12px;
+    color: white;
+    transition: transform 0.2s;
+  }
+
+  .metrics .card:hover {
+    transform: translateY(-5px);
+  }
+
+  .metrics .card i {
+    margin-bottom: 8px;
+    font-size: 1.5rem;
+  }
+
+  .product-card {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    background: #fff;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    transition: transform 0.2s;
+  }
+
+  .product-card:hover { transform: translateY(-5px); }
+
+  .product-card img {
+    width: 100px;
+    border-radius: 10px;
+  }
+
+  .product-list {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .product-info h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #2c3e50;
+  }
+
+  .product-info p {
+    margin: 2px 0;
+    font-size: 0.9rem;
+    color: #555;
+  }
+
+  .product-info button {
+    margin: 5px 0;
+    padding: 6px 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s;
+  }
+
+  .product-info button:first-child {
+    background-color: #4CAF50;
+    color: white;
+  }
+
+  .product-info button:first-child:hover {
+    background-color: #45a049;
+  }
+
+  .product-info button:last-child {
+    background-color: #f44336;
+    color: white;
+  }
+
+  .product-info button:last-child:hover {
+    background-color: #e53935;
+  }
+
+  .logo img {
+    height: 6vh;
+    width: auto;
+  }
+
+  .profile-icon img {
+    height: 5vh;
+    width: 5vh;
+    border-radius: 50%;
+    border: 2px solid white;
+  }
+
+  .close {
+    position: absolute;
+    left: 255px;
+    top: 7vh;
+    background:white;
+    width:45px;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+
+  .close:hover {
+    color: #f44336;
+    font-weight: bold;
+  }
+
+  .product-search {
+    display: flex;
+    justify-content: flex-start;
+    margin: 10px 0;
+    gap: 10px;
+  }
+
+  .product-search input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 250px;
+    font-size: 0.95rem;
+    transition: border 0.3s, box-shadow 0.3s;
+  }
+
+  .product-search input:focus {
+    border: 1px solid #2193b0;
+    box-shadow: 0 0 6px rgba(33,147,176,0.4);
+    outline: none;
+  }
+
+  .product-search button {
+    border: none;
+    background: linear-gradient(135deg, #2193b0, #6dd5ed);
+    color: white;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.1s;
+  }
+
+  .product-search button:hover {
+    background: linear-gradient(135deg, #1b7a93, #5cc9db);
+    transform: scale(1.05);
+  }
