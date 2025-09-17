@@ -1,208 +1,171 @@
 //###########################################################################################
+import { Products } from "../Dashboard/productsPackage/products.js";
 class SendData {
-    SubmitData(data) {
+    async SubmitData(data) {
         try {
-            fetch("http://192.168.1.19/serverside/", {
+            const res = await fetch("http://127.0.0.1/serverside/", {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
-            })
-            .then(res => {
-                // Check HTTP status before parsing JSON
-                if (!res.ok) {
-                    throw new Error(`HTTP error! status: ${res.status} - ${res.statusText}`);
-                }
-                return res.json();
-            })
-            .then(text => {
-                ////////////////////////////////
-                if (data.action == "registration") {
-                    document.querySelector("#error").setAttribute("class", "success");
-                    document.getElementById("phaseone").style.display = "block";
-                    document.getElementById("phasetwo").style.display = "none";
-                    document.querySelector(".success").innerHTML = "!!Registration success";
-                    setTimeout(() => { location.href = `index.html?username=${text.UserName}` }, 0);
-                }
-                //////////////////////////////////////////////////////////////////////
-                else if (data.action == "login") {
-                    document.querySelector("#error").setAttribute("class", "success");
-                    document.querySelector(".success").innerHTML = "!!Login success";
-                    setTimeout(() => { location.href = `../Dashboard/index.html?username=${text.UserName}` }, 2000);
-                }
-                //////////////////////////////////////////////////////////////////
-                else if (data.action === "forgot") {
-                    document.querySelector("#error").setAttribute("class", "success");
+            });
 
-                    const mailLink = `mailto:${text.email}?subject=Verification Code&body=Your code is ${text.code}`;
-                    const anchor = document.createElement("a");
-                    anchor.href = mailLink;
-                    anchor.style.display = "block";
-                    document.body.appendChild(anchor);
+            if (!res.ok) {
+                throw new Error(`HTTP error! status: ${res.status} - ${res.statusText}`);
+            }
 
-                    try { anchor.click(); } 
-                    catch (error) { alert("Failed to open email client automatically. Please click the link manually."); }
+            const text = await res.json();
+            this.handleResponse(data, text);
+        } catch (error) {
+            console.error("Fetch error:", error);
+            this.handleError(data.action, error.message);
+        }
+    }
 
-                    document.querySelector(".success").innerHTML = `!! Enter code sent to your Email <br>${text.code}`;
-                    document.querySelector(".error1").innerHTML = "";
+    handleResponse(data, text) {
+        const errorBox = document.querySelector("#error");
+        if (!errorBox) return;
 
-                    const verify = document.querySelector("#verify");
+        if (data.action === "registration") {
+            errorBox.className = "success";
+            document.getElementById("phaseone").style.display = "block";
+            document.getElementById("phasetwo").style.display = "none";
+            errorBox.innerHTML = "✅ Registration successful!";
+            setTimeout(() => { location.href = `index.html?username=${text.UserName}`; }, 1000);
+        }
 
-                    verify.addEventListener("input", () => {
-                        const email = document.querySelector("#email").value;
+        else if (data.action === "login") {
+            errorBox.className = "success";
+            errorBox.innerHTML = "✅ Login success!";
+            new Products(text.role); // <-- Initialize products with role
+            setTimeout(() => {
+                location.href = `../Dashboard/common/index.html?username=${text.UserName}&role=${text.role}`;
+            }, 1000);
+        }
 
-                        if (verify.value !== text.code || email !== text.email) {
-                            document.querySelector("#error").setAttribute("class", "error");
-                            document.querySelector(".error").innerHTML = "Invalid code";
-                        } else {
-                            document.querySelector("#error").setAttribute("class", "success");
-                            document.querySelector(".error1").innerHTML = "";
+        else if (data.action === "forgot") {
+            errorBox.className = "success";
+            errorBox.innerHTML = `✅ Enter code sent to your Email <br>${text.code}`;
 
-                            const resetMailLink = `mailto:${text.email}?subject=Request to change password&body=Click the link to reset: resetpassword.html`;
+            const verify = document.querySelector("#verify");
+            verify.addEventListener("input", () => {
+                const email = document.querySelector("#email").value;
 
-                            const anchorReset = document.createElement("a");
-                            anchorReset.href = resetMailLink;
-                            anchorReset.style.display = "none";
-                            document.body.appendChild(anchorReset);
-
-                            try { anchorReset.click(); } 
-                            catch (error) { alert("Failed to open email client for reset link."); }
-
-                            document.querySelector(".success").innerHTML = "Password reset link sent to your email";
-
-                            setTimeout(() => {
-                                location.href = `resetpassword.html?email=${text.email}`;
-                            }, 4000);
-                        }
-                    });
-                }
-                //////////////////////////////////////////////////////////////
-                else if (data.action == "reset") {
-                    document.querySelector("#error1").setAttribute("class", "success");
-                    document.querySelector(".success").innerHTML = "!!Password Reset successfully";
-                    setTimeout(() => { location.href = `index.html?username=` }, 1000);
-                }
-            })
-            .catch(error => {
-                console.error("Fetch error:", error);  // log full error to console
-
-                // Show error details on screen
-                document.querySelector("#error").setAttribute("class", "error");
-                document.querySelector("#error").innerHTML = `⚠️ Request failed: ${error.message}`;
-
-                if (data.action == "registration") {
-                    document.getElementById("phaseone").style.display = "block";
-                    document.getElementById("phasetwo").style.display = "none";
-                }
-                else if (data.action == "login") {
-                    document.querySelector("#error").textContent = "Incorrect Password or Email";
-                }
-                else if (data.action == "forgot") {
-                    document.querySelector("#error1").textContent = "Email not Found";
-                }
-                else if (data.action == "reset") {
-                    document.querySelector("#error1").textContent = "!! Failed to reset Password";
+                if (verify.value !== text.code || email !== text.email) {
+                    errorBox.className = "error";
+                    errorBox.innerHTML = "⚠️ Invalid code";
+                } else {
+                    errorBox.className = "success";
+                    errorBox.innerHTML = "✅ Password reset link sent!";
+                    setTimeout(() => {
+                        location.href = `resetpassword.html?email=${text.email}`;
+                    }, 2000);
                 }
             });
-        } catch (error) {
-            console.error("Unexpected error:", error);
-            document.querySelector("#error").setAttribute("class", "error");
-            document.querySelector("#error").textContent = "⚠️ Unexpected error: " + error.message;
+        }
+
+        else if (data.action === "reset") {
+            const resetErrorBox = document.querySelector("#error1");
+            resetErrorBox.className = "success";
+            resetErrorBox.innerHTML = "✅ Password reset successfully!";
+            setTimeout(() => { location.href = "index.html"; }, 1000);
+        }
+    }
+
+    handleError(action, msg) {
+        const errorBox = document.querySelector("#error");
+        const errorBox1 = document.querySelector("#error1");
+
+        switch (action) {
+            case "registration":
+                errorBox.className = "error";
+                errorBox.innerHTML = `⚠️ Registration failed: ${msg}`;
+                document.getElementById("phaseone").style.display = "block";
+                document.getElementById("phasetwo").style.display = "none";
+                break;
+
+            case "login":
+                errorBox.className = "error";
+                errorBox.textContent = "⚠️ Incorrect Email or Password";
+                break;
+
+            case "forgot":
+                errorBox1.className = "error";
+                errorBox1.textContent = "⚠️ Email not found";
+                break;
+
+            case "reset":
+                errorBox1.className = "error";
+                errorBox1.textContent = "⚠️ Failed to reset password";
+                break;
+
+            default:
+                errorBox.className = "error";
+                errorBox.textContent = `⚠️ Unexpected error: ${msg}`;
         }
     }
 }
 
 //################################################################################
-document.addEventListener("DOMContentLoaded",()=>{
-    const params =new URLSearchParams(window.location.search);
-    const form = document.querySelector("#login")??document.querySelector("#reset")??document.querySelector("#register")??document.querySelector("#forgot");
-   
-        form.addEventListener("submit",(e)=>{
-        const formData = new FormData(form);
-        var email ;
-        var password;
-        
-    if(form.id =="register"){
-        var username = formData.get("username") ??"guest";
-         email = formData.get("email") ?? "guest@gmail.com";
-        var phone = formData.get("phone")??"0";
-         password = formData.get("password")??"null";
+document.addEventListener("DOMContentLoaded", () => {
+    const params = new URLSearchParams(window.location.search);
+    const form = document.querySelector("form"); // safer: select only one form per page
+    if (!form) return;
 
-        var cpassword = document.getElementById("confirm");
-        const details =[username,email,phone,password];
-        for(var a =0;a<details.length;a++){
-            
-        if(details[a] ==""){
-             document.getElementById("phaseone").style.display ="block";
-             document.getElementById("phasetwo").style.display ="none";
-             document.querySelector("#error").textContent = "All fields are required";
-        }
-        else{
-            const data ={username:`${username}`,email:`${email}`,phone:`${phone}`,password:`${password}`,action:`registration`};
-            const sendData = new SendData();
-            sendData.SubmitData(data);
-        }
-    }
-        
-        
-        
-    }
-    else if(form.id =="login"){
-        email = formData.get("email") ?? "";
-         password = formData.get("password")??"";
-         if(email ==""){
-            document.querySelector("#error").textContent ="!! Please enter your Email";
-            document.querySelector("#error2").textContent ="";
-        }
-        if(password == ""){
-            document.querySelector("#error2").textContent ="!! Password required";
-            document.querySelector("#error").textContent ="";
-        }
-         if(password !="" && email !=""){
-        const sendData = new SendData();
-         const data = {
-        email: `${email}`,password:`${password}`,action:"login"
-     };
-        sendData.SubmitData(data);
-        }
-    }
-     else if(form.id =="forgot"){
-      email = formData.get("email") ?? "";
-        if(email != ""){
-             data = {
-        email: `${email}`,action:"forgot"};
-           const sendData = new SendData();
-            sendData.SubmitData(data);
-        }else{
-         document.querySelector("#error1").textContent ="!! Please enter your Email";
-         document.querySelector(".error").innerHTML = "";
-        
-        }
-        
-    }
-     else if(form.id =="reset"){
-      password = formData.get("password") ?? "";
-      email =params.get("email");
-
-        if(password != ""){
-           const sendData = new SendData();
-           const data = {
-        email: `${email}`,password:`${password}`,action:"reset"
-     };
-           sendData.SubmitData(data);
-        }else{
-         document.querySelector("#error1").textContent ="!!Password Required";
-         document.querySelector("#error").innerHTML = "";
-        
-        }
-    }else{}
-        
-        if(password =="" && email ==""){
-            document.querySelector("#error").textContent ="All fields required";
-            document.querySelector("#error2").textContent ="";
-        }
+    form.addEventListener("submit", (e) => {
         e.preventDefault();
-        })
+
+        const formData = new FormData(form);
+        const sendData = new SendData();
+
+        let data = {};
+        let email = formData.get("email") ?? "";
+        let password = formData.get("password") ?? "";
+
+        if (form.id === "register") {
+            const username = formData.get("username") ?? "guest";
+            const phone = formData.get("phone") ?? "0";
+
+            if (!username || !email || !phone || !password) {
+                document.querySelector("#error").textContent = "⚠️ All fields are required";
+                return;
+            }
+
+            data = { username, email, phone, password, action: "registration" };
+        }
+
+        else if (form.id === "login") {
+            if (!email) {
+                document.querySelector("#error").textContent = "⚠️ Please enter your Email";
+                return;
+            }
+            if (!password) {
+                document.querySelector("#error2").textContent = "⚠️ Password required";
+                return;
+            }
+
+            data = { email, password, action: "login" };
+        }
+
+        else if (form.id === "forgot") {
+            if (!email) {
+                document.querySelector("#error1").textContent = "⚠️ Please enter your Email";
+                return;
+            }
+
+            data = { email, action: "forgot" };
+        }
+
+        else if (form.id === "reset") {
+            if (!password) {
+                document.querySelector("#error1").textContent = "⚠️ Password required";
+                return;
+            }
+
+            data = { email: params.get("email"), password, action: "reset" };
+        }
+
+        if (Object.keys(data).length > 0) {
+            sendData.SubmitData(data);
+        }
+    });
 });
-
-
-

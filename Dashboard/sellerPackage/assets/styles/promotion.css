@@ -1,0 +1,207 @@
+/* ===========================
+   Promotions & Campaigns Page
+   =========================== */
+.promotions-page {
+  padding: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.promotions-page .heading {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #222;
+}
+
+/* Metrics Section */
+.promotions-page .metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.promotions-page .metrics .card {
+  background: #fff;
+  color: #000;
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.promotions-page .metrics .card i {
+  font-size: 24px;
+  margin-bottom: 5px;
+  color: #007bff;
+}
+
+.promotions-page .metrics h3 {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.promotions-page .metrics p {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+/* Campaign List */
+.promotion-list {
+  margin-top: 20px;
+}
+
+.promotion-list h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.add-btn {
+  background: #007bff;
+  color: #fff;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: 0.2s ease;
+}
+.add-btn:hover {
+  background: #0056b3;
+}
+
+.promotion-list table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.promotion-list th, 
+.promotion-list td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+  text-align: center;
+}
+
+.promotion-list th {
+  background: #f8f9fa;
+  font-weight: bold;
+}
+
+.promotion-list tr:hover {
+  background: #f3f7ff;
+}
+
+.status {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+.status.active {
+  background: #d4f6da;
+  color: #218838;
+}
+.status.upcoming {
+  background: #fff3cd;
+  color: #856404;
+}
+.status.expired {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* Buttons */
+.edit-btn, 
+.delete-btn, 
+.toggle-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px 8px;
+  margin: 0 3px;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.edit-btn { color: #007bff; }
+.edit-btn:hover { background: #e7f1ff; }
+
+.delete-btn { color: #dc3545; }
+.delete-btn:hover { background: #fde2e4; }
+
+.toggle-btn { color: #28a745; }
+.toggle-btn:hover { background: #e3fcef; }
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  width: 400px;
+  border-radius: 12px;
+  position: relative;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  font-size: 20px;
+  color: #333;
+}
+
+.modal-content label {
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.modal-content input,
+.modal-content select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.modal-content button[type="submit"] {
+  margin-top: 15px;
+  background: #007bff;
+  border: none;
+  padding: 10px;
+  color: white;
+  width: 100%;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.modal-content button[type="submit"]:hover {
+  background: #0056b3;
+}
+
+.close-modal {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  font-size: 20px;
+  cursor: pointer;
+  color: #666;
+}
+.close-modal:hover {
+  color: #000;
+}

@@ -1,0 +1,67 @@
+/* ================== AFFILIATE PAGE ================== */
+.affiliate-page {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  overflow-x: auto;
+  gap: 30px;
+}
+
+/* Affiliate links */
+.affiliate-links .affiliate-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f9f9f9;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+.affiliate-links input {
+  flex: 1;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 0.9rem;
+}
+.affiliate-links .copy-btn {
+  background: linear-gradient(135deg, #2193b0, #6dd5ed);
+  border: none;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.affiliate-links .copy-btn:hover {
+  background: linear-gradient(135deg, #1b7a93, #5cc9db);
+  transform: scale(1.05);
+}
+
+/* Affiliate list */
+.affiliate-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.affiliate-list th, .affiliate-list td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  text-align: center;
+  font-size: 0.95rem;
+}
+.affiliate-list th {
+  background: #f0f0f0;
+  font-weight: 600;
+}
+.status {
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.status.active { background: #c8e6c9; color: #2e7d32; }
+.status.pending { background: #fff3cd; color: #856404; }
+.status.blocked { background: #ffcdd2; color: #c62828; }

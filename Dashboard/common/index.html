@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seller Dashboard</title>
+  
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    @import url("assets/styles/dashboard.css");
+    @import url("../sellerPackage/assets/styles/manageAffiliate.css");
+    @import url("../sellerPackage/assets/styles/orders.css");
+    @import url("../sellerPackage/assets/styles/promotion.css");
+    @import url("../sellerPackage/assets/styles/earnings.css");
+    @import url("assets/styles/profile.css");
+    @import url("../productsPackage/assets/styles/cart.css");
+    @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+  </style>
+</head>
+<body>
+  <!-- Top bar -->
+  <div class="top">
+    <div class="logo">
+      <img src="assets/images/smartshopLogo.png" alt="Biashara">
+    </div>
+    <div class="profile-icon">
+      <img src="assets/images/pic.jpg" alt="Profile">
+    </div>
+  </div>
+
+  <!-- Sidebar / Header -->
+  <header class="dashboard-header">
+    <button class="close"><i class="fa-solid fa-xmark"></i></button>
+    <div class="card">
+      <img src="../sellerPackage/assets/images/pic.jpg" alt="User">
+      <h3 id ="Welcomemessage">Welcome Seller</h3>
+      <hr width="100%">
+    </div>
+
+    <nav>
+      <button><i class="fa-solid fa-box"></i> Products</button>
+      <button><i class="fa-solid fa-shopping-cart"></i> Orders</button>
+      <button><i class="fa-solid fa-chart-line"></i> Analytics</button>
+      <button><i class="fa-solid fa-gear"></i> Settings</button>
+    </nav>
+  </header>
+
+  <!-- Main Dashboard -->
+  <main class="dashboard-main">
+
+  </main>
+  <script type="module" src="../sellerPackage/scripts/dashboard.js"></script>
+  <script type="module" src="controls/navBar.js"></script>
+  <script type="module" src="controls/control.js"></script>
+</body>
+</html>

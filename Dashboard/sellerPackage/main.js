@@ -1,6 +1,6 @@
-import {Begin} from "./dashboard.js";
+import {Begin} from "./scripts/dashboard.js";
 import{toplabels,categoryLabels,category,icon,footerLabels,footerIcons, profileCategory, ProfileIcons,image,name,legend} from "./data.js";
-import {Products} from "./products.js";
+import {Products} from "./scripts/products.js";
  function topLables(){
     const beg =new Begin();
     

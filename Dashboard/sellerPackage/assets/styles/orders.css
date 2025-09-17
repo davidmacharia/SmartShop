@@ -1,0 +1,180 @@
+/* ==========================
+   Orders Page (Refined)
+   ========================== */
+.orders-page {
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  padding: 20px;
+  color: #333;
+}
+
+.orders-page h2.heading {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #222;
+}
+
+.orders-page h3 {
+  margin: 20px 0 10px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* ========== Buttons ========== */
+button {
+  cursor: pointer;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+button i {
+  font-size: 14px;
+}
+
+/* Primary Actions */
+.export-btn {
+  background: #2563eb;
+  color: #fff;
+  margin-bottom: 10px;
+}
+.export-btn:hover { background: #1d4ed8; }
+
+.ship-btn {
+  background: #3b82f6;
+  color: #fff;
+}
+.ship-btn:hover { background: #2563eb; }
+
+.deliver-btn {
+  background: #16a34a;
+  color: #fff;
+}
+.deliver-btn:hover { background: #15803d; }
+
+.cancel-btn {
+  background: #dc2626;
+  color: #fff;
+}
+.cancel-btn:hover { background: #b91c1c; }
+
+.view-btn {
+  background: #6b7280;
+  color: #fff;
+}
+.view-btn:hover { background: #4b5563; }
+
+/* ========== Table (Unified Theme) ========== */
+.orders-list {
+  margin-top: 20px;
+}
+
+.orders-list table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.orders-list th, 
+.orders-list td {
+  padding: 12px 15px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.orders-list th {
+  background: #f8f9fa;
+  font-weight: bold;
+  color: #111827;
+}
+
+.orders-list tr:nth-child(even) {
+  background: #f9fafb;
+}
+
+.orders-list tr:hover {
+  background: #f3f7ff; /* light blue hover (same as promotions) */
+}
+
+/* ========== Status Labels ========== */
+.status {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.status.pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status.shipped {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.status.delivered {
+  background: #d4f6da;
+  color: #218838;
+}
+
+.status.cancelled {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* ========== Modal ========== */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  width: 400px;
+  border-radius: 12px;
+  position: relative;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  font-size: 20px;
+  color: #333;
+}
+
+.modal-content p {
+  margin: 8px 0;
+}
+
+.close-modal {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  font-size: 20px;
+  cursor: pointer;
+  color: #666;
+}
+.close-modal:hover { color: #000; }
+
+/* ========== Animations ========== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

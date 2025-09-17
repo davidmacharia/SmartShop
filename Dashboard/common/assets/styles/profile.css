@@ -1,0 +1,193 @@
+/* ==========================
+   Seller Profile Page
+   ========================== */
+.profile-page {
+  padding: 20px;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  color: #333;
+}
+
+
+.profile-page .heading {
+  font-size: 24px;
+  margin-bottom: 15px;
+  color: #222;
+}
+
+/* Header */
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: #fff;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.profile-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Sections */
+.profile-section {
+  background: #fff;
+  padding: 15px;
+  margin-top: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.profile-section h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: #2563eb;
+}
+
+/* Forms */
+.profile-section form label {
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.profile-section form input,
+.profile-section form textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.profile-section form textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.profile-section form button {
+  margin-top: 15px;
+  background: #2563eb;
+  border: none;
+  padding: 10px 15px;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+.profile-section form button:hover {
+  background: #1d4ed8;
+}
+
+/* Danger button for password */
+.danger-btn {
+  background: #dc2626 !important;
+}
+.danger-btn:hover {
+  background: #b91c1c !important;
+}
+.profile-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* side by side */
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.profile-header,
+.profile-section {
+  background: #fff;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.profile-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.profile-row {
+  display: grid;
+  grid-template-columns: 1fr; /* stack by default */
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.profile-header,
+.profile-section {
+  background: #fff;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.profile-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Side by side on larger screens */
+@media (min-width: 900px) {
+  .profile-row {
+    grid-template-columns: 1fr 1fr; /* two columns */
+  }
+}
+.avatar-wrapper {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #e5e7eb;
+  transition: 0.3s;
+}
+
+.avatar-wrapper:hover .profile-avatar {
+  opacity: 0.7;
+}
+
+.avatar-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background: rgba(0,0,0,0.4);
+  font-size: 20px;
+  opacity: 0;
+  transition: 0.3s;
+}
+
+.avatar-wrapper:hover .avatar-overlay {
+  opacity: 1;
+}
