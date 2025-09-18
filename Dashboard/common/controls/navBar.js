@@ -9,6 +9,7 @@ import { Promotions } from "../../sellerPackage/scripts/promotions.js";
 import { Earnings } from "../../sellerPackage/scripts/earnings.js";
 import { Profile } from "../scripts/profile.js"; 
 import { BuyerDashboard } from "../../buyerPackage/dashboard.js";
+import { Payment } from "../../paymentPackage/payment.js";    
 
 class Main {
   static initApp(navBar) {
@@ -32,7 +33,6 @@ class Main {
           { text: "Profile", icon: "fa-user" }
         ];
         break;
-
       case "affiliate":
         list = [
           { text: "Home", icon: "fa-house" },
@@ -43,7 +43,6 @@ class Main {
           { text: "Profile", icon: "fa-user" }
         ];
         break;
-
       case "seller":
         list = [
           { text: "Home", icon: "fa-house" },
@@ -55,7 +54,6 @@ class Main {
           { text: "Profile", icon: "fa-user" }
         ];
         break;
-
       case "admin":
         list = [
           { text: "Home", icon: "fa-house" },
@@ -70,15 +68,21 @@ class Main {
         break;
     }
 
-    // Clear nav before rendering
     nav.innerHTML = "";
 
-    // 👉 Shared instances (so Cart + Wishlist communicate)
-    let cart, wishlist, products;
+    // 👉 Shared instances for BUYER
+    let cart, wishlist, orders, products, buyerDashboard;
     if (role === "buyer") {
       cart = new Cart();
-      wishlist = new Wishlist(cart); 
+      wishlist = new Wishlist();
+      orders = new ManageOrders();
       products = new Products(role, cart, wishlist);
+      buyerDashboard = new BuyerDashboard(cart, wishlist, orders);
+
+      // keep dashboard updated automatically
+      cart.onChange = () => buyerDashboard.refreshMetrics();
+      wishlist.onChange = () => buyerDashboard.refreshMetrics();
+      orders.onChange = () => buyerDashboard.refreshMetrics();
     } else {
       products = new Products(role);
     }
@@ -87,15 +91,10 @@ class Main {
     list.forEach((item, index) => {
       const button = document.createElement("button");
       button.innerHTML = `<i class="fa-solid ${item.icon}"></i> ${item.text}`;
-
-      // Highlight first button (Home) initially
       if (index === 0) button.classList.add("active");
-
       nav.appendChild(button);
 
-      // Event listener per button
       button.addEventListener("click", async () => {
-        // Remove "active" from all, then add to this one
         nav.querySelectorAll("button").forEach(b => b.classList.remove("active"));
         button.classList.add("active");
 
@@ -139,7 +138,7 @@ class Main {
             switch (item.text) {
               case "Home":
                 document.querySelector(".dashboard-main").innerHTML =
-                  new BuyerDashboard().initBuyerDashboard();
+                  buyerDashboard.initBuyerDashboard();
                 products.productControls();
                 break;
               case "Cart":
@@ -149,7 +148,7 @@ class Main {
                 break;
               case "Orders":
                 document.querySelector(".dashboard-main").innerHTML =
-                  new ManageOrders().renderOrders();
+                  orders.renderOrders();
                 break;
               case "Wish List":
                 document.querySelector(".dashboard-main").innerHTML =
@@ -157,8 +156,10 @@ class Main {
                 wishlist.initControls();
                 break;
               case "Payments":
+                const payment = new Payment(cart, orders, ["M-Pesa", "Visa", "PayPal"]);
                 document.querySelector(".dashboard-main").innerHTML =
-                  "<h2>Payments</h2>";
+                  payment.renderPaymentPage();
+                payment.initControls();
                 break;
               case "Profile":
                 document.querySelector(".dashboard-main").innerHTML =
@@ -242,7 +243,6 @@ class Main {
   }
 }
 
-// Run when DOM is ready
 document.addEventListener("DOMContentLoaded", () => {
   Main.initApp("nav");
 });

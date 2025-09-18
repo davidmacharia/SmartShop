@@ -2,12 +2,14 @@ export class Wishlist {
   constructor(cart = null) {
     this.items = [];
     this.cart = cart; // optional link to cart
+    this.onChange = null; // ✅ callback for dashboard updates
   }
 
   addItem(product) {
     const exists = this.items.find(p => p.name === product.name);
     if (!exists) {
       this.items.push(product);
+      this.triggerChange();
       this.showAddedModal(product.name);
     } else {
       this.showAlreadyExistsModal(product.name);
@@ -16,10 +18,16 @@ export class Wishlist {
 
   removeItem(name) {
     this.items = this.items.filter(p => p.name !== name);
+    this.triggerChange();
+  }
+
+  // ✅ new reusable trigger for dashboard updates
+  triggerChange() {
+    if (this.onChange) this.onChange();
   }
 
   renderWishlist() {
-    let text = `<h2 class="heading">❤️ Your Wishlist</h2><hr width="100%">`;
+    let text = `<h2 class="heading">❤️ Your Wishlist (${this.items.length} items)</h2><hr width="100%">`;
 
     if (this.items.length === 0) {
       text += `<p class="empty-wishlist">Your wishlist is empty.</p>`;

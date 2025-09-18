@@ -2,26 +2,39 @@ import { Products } from "../../productsPackage/products.js";
 
 export const SellerDashboard = class {
   constructor() {
-    this.items = [
-      { icon: "fa-solid fa-box-open fa-2x", title: "Products", info: "18 listed" },
-      { icon: "fa-solid fa-receipt fa-2x", title: "Orders", info: "5 pending" },
-      { icon: "fa-solid fa-dollar-sign fa-2x", title: "Revenue", info: "$1,250" }
-    ];
+    this.products = new Products("seller");
 
-    // keep reference to products instance
-    this.products = new Products();
+    // hook into Products change events
+    this.products.onChange = () => this.renderToDashboard();
   }
 
-  initSellerDashboard() {
-    this.products.initSearch();
-    this.products.initControls();
+  getMetrics() {
+    return [
+      {
+        icon: "fa-solid fa-box-open fa-2x",
+        title: "Products",
+        info: `${this.products.items.length} listed`
+      },
+      {
+        icon: "fa-solid fa-receipt fa-2x",
+        title: "Orders",
+        info: "5 pending"
+      },
+      {
+        icon: "fa-solid fa-dollar-sign fa-2x",
+        title: "Revenue",
+        info: "$1,250"
+      }
+    ];
+  }
+
+  render() {
     let text = `
       <h3>Overview Metrics</h3>
       <hr class="ruler" width="100%">
       <section class="metrics">`;
 
-    // Add metric cards
-    this.items.forEach(item => {
+    this.getMetrics().forEach(item => {
       text += `
         <div class="card">
           <i class="${item.icon}"></i>
@@ -30,17 +43,20 @@ export const SellerDashboard = class {
         </div>`;
     });
 
-    // ✅ Close metrics section before adding products
     text += `</section>`;
-
-    // Insert product section
-    const productsHTML = this.products.showProducts();
-
-    text += `
-      ${productsHTML}
-    `;
-
+    text += this.products.showProducts();
     return text;
   }
-}
 
+  renderToDashboard() {
+    const container = document.querySelector(".dashboard-main");
+    if (container) {
+      container.innerHTML = this.render();
+      this.products.productControls();
+    }
+  }
+
+  initSellerDashboard() {
+    return this.render();
+  }
+};

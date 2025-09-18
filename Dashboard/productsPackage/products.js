@@ -1,10 +1,9 @@
-
 export class Products {
-  constructor(role   ,cart = null, wishlist = null) {
+  constructor(role, cart = null, wishlist = null) {
     this.items = [
       { name: "Smart Watch", price: 65, stock: 32, image: "pic.jpg" },
       { name: "Wireless Earbuds", price: 45, stock: 77, image: "pic.jpg" },
-      { name: "Bluetooth Speaker", price: 80, stock: 20, image: "pic.jpg" }
+      { name: "Bluetooth Speaker", price: 80, stock: 20, image: "pic.jpg" },
     ];
     this.currentProduct = null;
     this.role = role;
@@ -34,7 +33,6 @@ export class Products {
           <div class="product-info">
             <h3>${item.name}</h3>
             <p class="price">Price: $${item.price}</p>
-            <p class="stock">Stock: ${item.stock} units</p>
       `;
 
       if (this.role === "buyer") {
@@ -44,6 +42,7 @@ export class Products {
         `;
       } else {
         text += `
+            <p class="stock">Stock: ${item.stock} units</p>
             <button class="edit-btn"><i class="fa-solid fa-pen"></i> Edit</button>
             <button class="delete-btn"><i class="fa-solid fa-trash"></i> Delete</button>
         `;
@@ -84,37 +83,39 @@ export class Products {
     } else {
       // Seller Modals
       text += `
-        <!-- 🖊️ Edit Modal -->
-        <div id="editModal" class="modal">
+        <!-- ✏️ Edit Product Modal -->
+        <div id="editProductModal" class="modal">
           <div class="modal-content">
-            <span class="close-edit">&times;</span>
             <h2>Edit Product</h2>
-            <form id="editForm">
+            <form id="editProductForm">
               <label>Name:</label>
-              <input type="text" id="editName" required>
-
+              <input type="text" id="editName" required />
+              
               <label>Price:</label>
-              <input type="number" id="editPrice" required>
-
+              <input type="number" id="editPrice" required />
+              
               <label>Stock:</label>
-              <input type="number" id="editStock" required>
+              <input type="number" id="editStock" required />
 
               <label>Image URL:</label>
-              <input type="text" id="editImage">
+              <input type="text" id="editImage" />
 
-              <button type="submit">Save Changes</button>
+              <div class="actions">
+                <button type="submit" class="confirm">Save</button>
+                <button type="button" id="cancelEdit">Cancel</button>
+              </div>
             </form>
           </div>
         </div>
 
-        <!-- 🗑️ Delete Modal -->
-        <div id="deleteModal" class="modal">
-          <div class="modal-content delete-content">
+        <!-- 🗑️ Delete Confirmation Modal -->
+        <div id="deleteProductModal" class="modal">
+          <div class="modal-content">
             <h2>Confirm Delete</h2>
             <p>Are you sure you want to delete this product?</p>
             <div class="actions">
               <button id="confirmDelete" class="confirm">Yes, Delete</button>
-              <button id="cancelDelete" class="cancel">Cancel</button>
+              <button id="cancelDelete">Cancel</button>
             </div>
           </div>
         </div>
@@ -130,7 +131,7 @@ export class Products {
 
     function searchProducts() {
       const query = searchInput.value.toLowerCase();
-      document.querySelectorAll(".product-card").forEach(card => {
+      document.querySelectorAll(".product-card").forEach((card) => {
         const title = card.querySelector("h3").textContent.toLowerCase();
         card.style.display = title.includes(query) ? "flex" : "none";
       });
@@ -142,6 +143,7 @@ export class Products {
 
   initControls() {
     if (this.role === "buyer") {
+      // Buyer modals logic (unchanged)
       const cartModal = document.getElementById("cartModal");
       const wishlistModal = document.getElementById("wishlistModal");
       const cartMessage = document.getElementById("cartMessage");
@@ -150,39 +152,30 @@ export class Products {
       const closeCart = document.getElementById("closeCart");
       const closeWishlist = document.getElementById("closeWishlist");
 
-      // --- CART BUTTONS ---
       document.querySelectorAll(".cart-btn").forEach((btn) => {
         btn.addEventListener("click", () => {
           const card = btn.closest(".product-card");
           const index = parseInt(card.dataset.index);
           const product = this.items[index];
 
-          // update cart
           if (this.cart) this.cart.addItem(product);
-
-          // show modal
           cartMessage.innerText = `${product.name} has been added to your cart ✅`;
           cartModal.style.display = "flex";
         });
       });
 
-      // --- WISHLIST BUTTONS ---
       document.querySelectorAll(".wishlist-btn").forEach((btn) => {
         btn.addEventListener("click", () => {
           const card = btn.closest(".product-card");
           const index = parseInt(card.dataset.index);
           const product = this.items[index];
 
-          // update wishlist
           if (this.wishlist) this.wishlist.addItem(product);
-
-          // show modal
           wishlistMessage.innerText = `${product.name} has been saved to your wishlist ❤️`;
           wishlistModal.style.display = "flex";
         });
       });
 
-      // Close modals
       closeCart.addEventListener("click", () => (cartModal.style.display = "none"));
       closeWishlist.addEventListener("click", () => (wishlistModal.style.display = "none"));
 
@@ -190,75 +183,81 @@ export class Products {
         if (e.target === cartModal) cartModal.style.display = "none";
         if (e.target === wishlistModal) wishlistModal.style.display = "none";
       });
+    } else {
+      // Seller modals logic
+      const editModal = document.getElementById("editProductModal");
+      const deleteModal = document.getElementById("deleteProductModal");
 
-      return;
+      let currentIndex = null;
+
+      // --- EDIT ---
+      document.querySelectorAll(".edit-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const card = btn.closest(".product-card");
+          currentIndex = parseInt(card.dataset.index);
+          const product = this.items[currentIndex];
+
+          document.getElementById("editName").value = product.name;
+          document.getElementById("editPrice").value = product.price;
+          document.getElementById("editStock").value = product.stock;
+          document.getElementById("editImage").value = product.image;
+
+          editModal.style.display = "flex";
+        });
+      });
+
+      document.getElementById("editProductForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        this.items[currentIndex] = {
+          name: document.getElementById("editName").value,
+          price: parseFloat(document.getElementById("editPrice").value),
+          stock: parseInt(document.getElementById("editStock").value),
+          image: document.getElementById("editImage").value || "pic.jpg",
+        };
+
+        editModal.style.display = "none";
+        document.querySelector(".dashboard-main").innerHTML = this.showProducts();
+        this.productControls();
+      });
+
+      document.getElementById("cancelEdit").addEventListener("click", () => {
+        editModal.style.display = "none";
+      });
+
+      // --- DELETE ---
+      document.querySelectorAll(".delete-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const card = btn.closest(".product-card");
+          currentIndex = parseInt(card.dataset.index);
+          deleteModal.style.display = "flex";
+        });
+      });
+
+      document.getElementById("confirmDelete").addEventListener("click", () => {
+  this.items.splice(currentIndex, 1);
+  deleteModal.style.display = "none";
+
+  // 🔥 Let SellerDashboard refresh metrics + products
+  if (this.onChange) {
+    this.onChange();
+  } else {
+    alert("failed");
+    // fallback if no dashboard is linked
+    document.querySelector(".dashboard-main").innerHTML = this.showProducts();
+    this.productControls();
+  }
+});
+
+
+      document.getElementById("cancelDelete").addEventListener("click", () => {
+        deleteModal.style.display = "none";
+      });
+
+      window.addEventListener("click", (e) => {
+        if (e.target === editModal) editModal.style.display = "none";
+        if (e.target === deleteModal) deleteModal.style.display = "none";
+      });
     }
-
-    // --- SELLER CONTROLS ---
-    const editModal = document.getElementById("editModal");
-    const deleteModal = document.getElementById("deleteModal");
-    const closeEdit = document.querySelector(".close-edit");
-    const editForm = document.getElementById("editForm");
-    const confirmDeleteBtn = document.getElementById("confirmDelete");
-    const cancelDeleteBtn = document.getElementById("cancelDelete");
-
-    document.querySelectorAll(".edit-btn").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        this.currentProduct = btn.closest(".product-card");
-
-        document.getElementById("editName").value =
-          this.currentProduct.querySelector("h3").innerText;
-        document.getElementById("editPrice").value =
-          this.currentProduct.querySelector(".price").innerText.replace("Price: $", "");
-        document.getElementById("editStock").value =
-          this.currentProduct.querySelector(".stock").innerText
-            .replace("Stock: ", "")
-            .replace(" units", "");
-        document.getElementById("editImage").value =
-          this.currentProduct.querySelector("img").src;
-
-        editModal.style.display = "flex";
-      });
-    });
-
-    editForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      this.currentProduct.querySelector("h3").innerText =
-        document.getElementById("editName").value;
-      this.currentProduct.querySelector(".price").innerText =
-        "Price: $" + document.getElementById("editPrice").value;
-      this.currentProduct.querySelector(".stock").innerText =
-        "Stock: " + document.getElementById("editStock").value + " units";
-      this.currentProduct.querySelector("img").src =
-        document.getElementById("editImage").value;
-
-      editModal.style.display = "none";
-    });
-
-    closeEdit.addEventListener("click", () => (editModal.style.display = "none"));
-    window.addEventListener("click", (e) => {
-      if (e.target === editModal) editModal.style.display = "none";
-      if (e.target === deleteModal) deleteModal.style.display = "none";
-    });
-
-    document.querySelectorAll(".delete-btn").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        this.currentProduct = btn.closest(".product-card");
-        deleteModal.style.display = "flex";
-      });
-    });
-
-    confirmDeleteBtn.addEventListener("click", () => {
-      if (this.currentProduct) {
-        this.currentProduct.remove();
-        this.currentProduct = null;
-      }
-      deleteModal.style.display = "none";
-    });
-
-    cancelDeleteBtn.addEventListener("click", () => {
-      deleteModal.style.display = "none";
-    });
   }
 
   productControls() {
