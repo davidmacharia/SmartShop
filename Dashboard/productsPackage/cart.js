@@ -1,158 +1,103 @@
-import { ManageOrders } from "./manageOrders.js";
-
+import { changeCurrency } from "../paymentPackage/managePayments.js";
 export class Cart {
-  constructor(manageOrders = null) {
+  constructor(orders = null) {
     this.items = [];
-    this.manageOrders = manageOrders || new ManageOrders();
-    this.onChange = null; // callback for dashboard & UI updates
+    this.onChange = null;
+    this.manageOrders = orders; // shared ManageOrders instance
+    this.currency = changeCurrency();
   }
 
-  // total number of items (sum of all quantities)
-  getItemCount() {
-    return this.items.reduce((sum, item) => sum + item.qty, 0);
+ addItem(item) {
+  const existing = this.items.find(i => i.name === item.name);
+  if (existing) {
+    existing.qty += item.qty ?? 1;   // increment if already exists
+  } else {
+    this.items.push({ ...item, qty: item.qty ?? 1 }); // ensure qty always set
   }
-
-  // total cost
+  this.triggerChange();
+  this.renderToDashboard();
+}
+ // ✅ New method to calculate total
   getTotal() {
-    return this.items.reduce((sum, item) => sum + item.price * item.qty, 0);
+    return this.items.reduce((sum, i) => sum + i.price * (i.qty ?? 1), 0);
   }
 
-  // heading text (for cart page/dashboard)
-  getHeadingText() {
-    return `Cart (${this.getItemCount()} items – $${this.getTotal()})`;
-  }
 
-  addItem(product) {
-    const existing = this.items.find((p) => p.name === product.name);
-    if (existing) {
-      existing.qty += 1;
-    } else {
-      this.items.push({ ...product, qty: 1 });
-    }
+  removeItem(index) {
+    this.items.splice(index, 1);
     this.triggerChange();
-    this.showAddedModal(product.name);
+    this.renderToDashboard();
   }
 
-  removeItem(name) {
-    this.items = this.items.filter((p) => p.name !== name);
+  clearCart() {
+    this.items = [];
     this.triggerChange();
-  }
-
-  // reusable change trigger
-  triggerChange() {
-    if (this.onChange) this.onChange();
-
-    // also auto-update cart heading if visible
-    const heading = document.querySelector(".cart-heading");
-    if (heading) heading.textContent = this.getHeadingText();
-  }
-
-  renderCart() {
-    const itemCount = this.getItemCount();
-    const totalCost = this.getTotal();
-
-    let text = `<h2 class="heading cart-heading">🛒 Your Cart (${itemCount} items – $${totalCost})</h2><hr width="100%">`;
-
-    if (this.items.length === 0) {
-      text += `<p class="empty-cart">Your cart is empty.</p>`;
-      return text;
-    }
-
-    text += `<section class="cart-list">`;
-    this.items.forEach(item => {
-      text += `
-        <div class="cart-card">
-          <img src="${item.image}" alt="${item.name}" />
-          <div class="cart-info">
-            <h3>${item.name}</h3>
-            <p>Price: $${item.price}</p>
-            <p>Quantity: ${item.qty}</p>
-            <p>Subtotal: $${item.price * item.qty}</p>
-            <button class="remove-btn" data-name="${item.name}">
-              <i class="fa-solid fa-trash"></i> Remove
-            </button>
-          </div>
-        </div>`;
-    });
-    text += `</section>`;
-
-    text += `<div class="cart-summary">
-               <h3>Total: $${this.getTotal()}</h3>
-               <button class="checkout-btn">
-                 <i class="fa-solid fa-credit-card"></i> Place Order
-               </button>
-             </div>`;
-
-    // ✅ checkout confirmation modal
-    text += `
-      <div id="orderModal" class="modal">
-        <div class="modal-content">
-          <h2>Confirm Order</h2>
-          <p>Are you sure you want to place this order?</p>
-          <div class="actions">
-            <button id="confirmOrder">Yes</button>
-            <button id="cancelOrder">Cancel</button>
-          </div>
-        </div>
-      </div>`;
-
-    return text;
-  }
-
-  initControls() {
-    // Remove item
-    document.querySelectorAll(".remove-btn").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        this.removeItem(btn.dataset.name);
-        this.renderToDashboard();
-      });
-    });
-
-    // Checkout / place order
-    const checkoutBtn = document.querySelector(".checkout-btn");
-    if (checkoutBtn) {
-      const orderModal = document.getElementById("orderModal");
-      const confirmOrder = document.getElementById("confirmOrder");
-      const cancelOrder = document.getElementById("cancelOrder");
-
-      checkoutBtn.addEventListener("click", () => {
-        orderModal.style.display = "flex";
-      });
-
-      confirmOrder.addEventListener("click", () => {
-        this.placeOrder();
-        orderModal.style.display = "none";
-      });
-
-      cancelOrder.addEventListener("click", () => {
-        orderModal.style.display = "none";
-      });
-
-      window.addEventListener("click", (e) => {
-        if (e.target === orderModal) orderModal.style.display = "none";
-      });
-    }
+    this.renderToDashboard();
   }
 
   placeOrder() {
-    if (this.items.length === 0) return;
+    if (this.items.length === 0) {
+      this.showModal("Cart Empty", "Your cart is empty. Add items before placing an order.");
+      return;
+    }
 
-    const newOrder = {
+    const order = {
       id: Date.now(),
-      items: [...this.items],
-      total: this.getTotal(),
       date: new Date().toLocaleString(),
       status: "Pending",
+      total: this.items.reduce((sum, i) => sum + i.price * (i.qty ?? 1), 0),
+      items: [...this.items]
     };
 
-    // 🔗 Always push into ManageOrders
-    this.manageOrders.addItem(newOrder);
+    if (this.manageOrders) {
+      this.manageOrders.addOrder(order);
+    }
 
-    this.items = [];
-    this.triggerChange();
+    // ✅ clear cart first
+    this.clearCart();
 
-    this.renderToDashboard();
-    this.showOrderPlacedModal();
+    // ✅ show modal and jump to orders on close
+    this.showModal("✅ Order Placed", `Order #${order.id} has been placed successfully!`, () => {
+      const container = document.querySelector(".dashboard-main");
+      if (container && this.manageOrders) {
+        container.innerHTML = this.manageOrders.renderOrders();
+        this.manageOrders.initControls();
+      }
+    });
+  }
+
+  triggerChange() {
+    if (this.onChange) this.onChange();
+  }
+
+  renderCart() {
+    let text = `<h2 class="heading">🛒 Cart (${this.items.length})</h2><hr width="100%">`;
+
+    if (this.items.length === 0) {
+      return text + `<p class="empty-cart">Your cart is empty.</p>`;
+    }
+
+    text += `<section class="cart-list">`;
+    this.items.forEach((item, i) => {
+      text += `
+        <div class="cart-card">
+          <h3>${item.name}</h3>
+          <p>Price: ${this.currency} ${item.price}</p>
+          <p>Qty: ${item.qty ?? 1}</p>
+          <button class="remove-cart" data-index="${i}">Remove</button>
+        </div>
+      `;
+    });
+    text += `</section>`;
+
+    text += `
+      <div class="cart-summary">
+        <p><strong>Total:</strong> ${this.currency} ${this.items.reduce((s, i) => s + i.price * (i.qty ?? 1), 0)}</p>
+        <button id="placeOrderBtn">✅ Place Order</button>
+      </div>
+    `;
+
+    return text;
   }
 
   renderToDashboard() {
@@ -163,49 +108,46 @@ export class Cart {
     }
   }
 
-  // modal for added items
-  showAddedModal(productName) {
-    let modal = document.getElementById("cartModal");
-    if (!modal) {
-      modal = document.createElement("div");
-      modal.id = "cartModal";
-      modal.className = "modal";
-      modal.innerHTML = `
-        <div class="modal-content">
-          <h2>Item Added</h2>
-          <p id="cartMessage"></p>
-          <button id="closeCartModal">OK</button>
-        </div>
-      `;
-      document.body.appendChild(modal);
-      modal.querySelector("#closeCartModal").addEventListener("click", () => {
-        modal.style.display = "none";
+  initControls() {
+    document.querySelectorAll(".remove-cart").forEach(btn => {
+      btn.addEventListener("click", e => {
+        const i = Number(e.target.dataset.index);
+        this.removeItem(i);
       });
+    });
+
+    const placeOrderBtn = document.getElementById("placeOrderBtn");
+    if (placeOrderBtn) {
+      placeOrderBtn.addEventListener("click", () => this.placeOrder());
     }
-    modal.querySelector("#cartMessage").innerText =
-      `${productName} was added to your cart!`;
-    modal.style.display = "flex";
   }
 
-  // modal after order placement
-  showOrderPlacedModal() {
-    let modal = document.getElementById("orderPlacedModal");
+  // 🔔 reusable modal system with callback
+  showModal(title, message, onClose = null) {
+    let modal = document.getElementById("orderModal");
+
     if (!modal) {
       modal = document.createElement("div");
-      modal.id = "orderPlacedModal";
+      modal.id = "orderModal";
       modal.className = "modal";
       modal.innerHTML = `
         <div class="modal-content">
-          <h2>🎉 Order Placed</h2>
-          <p>Your order has been placed successfully!</p>
-          <button id="closeOrderPlaced">OK</button>
+          <h2 id="orderModalTitle"></h2>
+          <p id="orderModalMessage"></p>
+          <button id="closeOrderModal">OK</button>
         </div>
       `;
       document.body.appendChild(modal);
-      modal.querySelector("#closeOrderPlaced").addEventListener("click", () => {
-        modal.style.display = "none";
-      });
     }
+
+    modal.querySelector("#orderModalTitle").innerText = title;
+    modal.querySelector("#orderModalMessage").innerText = message;
     modal.style.display = "flex";
+
+    const closeBtn = modal.querySelector("#closeOrderModal");
+    closeBtn.onclick = () => {
+      modal.style.display = "none";
+      if (onClose) onClose(); // 👈 jump to Orders after modal closes
+    };
   }
 }

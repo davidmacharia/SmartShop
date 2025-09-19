@@ -1,0 +1,173 @@
+/* ===========================
+   ManageOrders / Orders Page
+   =========================== */
+
+/* Container */
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 16px 0;
+  padding: 0;
+}
+
+/* Order Card */
+.order-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 16px 18px;
+  box-shadow: 0 6px 18px rgba(10, 10, 10, 0.06);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+  overflow: hidden;
+}
+
+.order-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(10, 10, 10, 0.09);
+}
+
+/* Header area inside card */
+.order-card h3 {
+  margin: 0 0 6px;
+  font-size: 1.05rem;
+  color: #1f2937; /* charcoal */
+}
+
+.order-card p {
+  margin: 4px 0;
+  color: #4b5563; /* muted text */
+  font-size: 0.95rem;
+}
+
+/* Order details row (date/status/total) */
+.order-meta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.order-date {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.order-total {
+  margin-left: auto;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* Items list inside card */
+.order-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0;
+  border-top: 1px solid #eef2f6;
+  padding-top: 10px;
+}
+
+.order-card li {
+  padding: 6px 0;
+  font-size: 0.95rem;
+  color: #334155;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Status badge */
+.order-status {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* Status color variants */
+.order-status.pending {
+  background: #fff7ed;
+  color: #92400e;
+}
+
+.order-status.paid {
+  background: #ecfdf5;
+  color: #065f46;
+}
+
+.order-status.cancelled {
+  background: #fff1f2;
+  color: #7f1d1d;
+}
+
+/* Action area */
+.order-actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Pay Now button */
+.pay-now {
+  background: linear-gradient(180deg, #0077b6, #005f8a);
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 6px 12px rgba(3, 102, 214, 0.12);
+  transition: transform 120ms ease, box-shadow 120ms ease, opacity 120ms;
+}
+
+.pay-now:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(3,102,214,0.15);
+}
+
+.pay-now:active {
+  transform: translateY(0);
+}
+
+/* Small helper button (cancel, view) */
+.order-actions .btn-secondary {
+  background: #f3f4f6;
+  color: #111827;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #e6e9ee;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* Empty orders fallback */
+.empty-orders {
+  text-align: center;
+  color: #6b7280;
+  font-size: 1rem;
+  padding: 28px 0;
+}
+
+/* Responsive layout */
+@media (min-width: 700px) {
+  .orders-list {
+    gap: 18px;
+  }
+
+  .order-card {
+    padding: 18px 22px;
+  }
+
+  .order-card li {
+    font-size: 1rem;
+  }
+}
+
+/* Accessibility / print tweaks */
+@media print {
+  .pay-now, .order-actions, .btn-secondary { display: none !important; }
+  .order-card { box-shadow: none; border: 1px solid #ddd; }
+}

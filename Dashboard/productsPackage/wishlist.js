@@ -1,54 +1,52 @@
+import { changeCurrency } from "../paymentPackage/managePayments.js";
 export class Wishlist {
   constructor(cart = null) {
     this.items = [];
-    this.cart = cart; // optional link to cart
-    this.onChange = null; // ✅ callback for dashboard updates
+    this.cart = cart; // shared cart instance
+    this.onChange = null;
+    this.currency = changeCurrency();
   }
 
-  addItem(product) {
-    const exists = this.items.find(p => p.name === product.name);
-    if (!exists) {
-      this.items.push(product);
-      this.triggerChange();
-      this.showAddedModal(product.name);
-    } else {
-      this.showAlreadyExistsModal(product.name);
-    }
-  }
-
-  removeItem(name) {
-    this.items = this.items.filter(p => p.name !== name);
+  addItem(item) {
+    this.items.push(item);
     this.triggerChange();
+    this.renderToDashboard();
   }
 
-  // ✅ new reusable trigger for dashboard updates
+  removeItem(index) {
+    this.items.splice(index, 1);
+    this.triggerChange();
+    this.renderToDashboard();
+  }
+
+  moveToCart(index) {
+    const item = this.items.splice(index, 1)[0];
+    if (item && this.cart) {
+      this.cart.addItem(item);
+    }
+    this.triggerChange();
+    this.renderToDashboard();
+  }
+
   triggerChange() {
     if (this.onChange) this.onChange();
   }
 
   renderWishlist() {
-    let text = `<h2 class="heading">❤️ Your Wishlist (${this.items.length} items)</h2><hr width="100%">`;
+    let text = `<h2 class="heading">❤️ Wishlist (${this.items.length})</h2><hr width="100%">`;
 
     if (this.items.length === 0) {
-      text += `<p class="empty-wishlist">Your wishlist is empty.</p>`;
-      return text;
+      return text + `<p class="empty-wishlist">No items in wishlist.</p>`;
     }
 
     text += `<section class="wishlist-list">`;
-    this.items.forEach(item => {
+    this.items.forEach((item, i) => {
       text += `
         <div class="wishlist-card">
-          <img src="${item.image}" alt="${item.name}" />
-          <div class="wishlist-info">
-            <h3>${item.name}</h3>
-            <p>Price: $${item.price}</p>
-            <button class="move-to-cart-btn" data-name="${item.name}">
-              <i class="fa-solid fa-cart-plus"></i> Move to Cart
-            </button>
-            <button class="remove-btn" data-name="${item.name}">
-              <i class="fa-solid fa-trash"></i> Remove
-            </button>
-          </div>
+          <h3>${item.name}</h3>
+          <p>Price: ${this.currency} ${item.price}</p>
+          <button class="move-to-cart" data-index="${i}">Move to Cart</button>
+          <button class="remove-wishlist" data-index="${i}">Remove</button>
         </div>
       `;
     });
@@ -57,77 +55,27 @@ export class Wishlist {
     return text;
   }
 
+  renderToDashboard() {
+    const container = document.querySelector(".dashboard-main");
+    if (container) {
+      container.innerHTML = this.renderWishlist();
+      this.initControls(); // rebind buttons
+    }
+  }
+
   initControls() {
-    // Remove button
-    document.querySelectorAll(".wishlist-card .remove-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        this.removeItem(btn.dataset.name);
-        document.querySelector(".dashboard-main").innerHTML = this.renderWishlist();
-        this.initControls();
+    document.querySelectorAll(".move-to-cart").forEach(btn => {
+      btn.addEventListener("click", e => {
+        const i = Number(e.target.dataset.index); // ✅ make sure it's a number
+        this.moveToCart(i);
       });
     });
 
-    // Move to cart
-    document.querySelectorAll(".move-to-cart-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const product = this.items.find(p => p.name === btn.dataset.name);
-        if (product && this.cart) {
-          this.cart.addItem(product);
-          this.removeItem(product.name);
-          document.querySelector(".dashboard-main").innerHTML = this.renderWishlist();
-          this.initControls();
-        }
+    document.querySelectorAll(".remove-wishlist").forEach(btn => {
+      btn.addEventListener("click", e => {
+        const i = Number(e.target.dataset.index); // ✅ make sure it's a number
+        this.removeItem(i);
       });
     });
-  }
-
-  // ✅ Modal for added to wishlist
-  showAddedModal(productName) {
-    let modal = document.getElementById("wishlistModal");
-    if (!modal) {
-      modal = document.createElement("div");
-      modal.id = "wishlistModal";
-      modal.className = "modal";
-      modal.innerHTML = `
-        <div class="modal-content">
-          <h2>Saved to Wishlist</h2>
-          <p id="wishlistMessage"></p>
-          <button id="closeWishlistModal">OK</button>
-        </div>
-      `;
-      document.body.appendChild(modal);
-
-      modal.querySelector("#closeWishlistModal").addEventListener("click", () => {
-        modal.style.display = "none";
-      });
-    }
-
-    modal.querySelector("#wishlistMessage").innerText = `${productName} was saved to your wishlist!`;
-    modal.style.display = "flex";
-  }
-
-  // ✅ Modal for already exists
-  showAlreadyExistsModal(productName) {
-    let modal = document.getElementById("wishlistExistsModal");
-    if (!modal) {
-      modal = document.createElement("div");
-      modal.id = "wishlistExistsModal";
-      modal.className = "modal";
-      modal.innerHTML = `
-        <div class="modal-content">
-          <h2>Already in Wishlist</h2>
-          <p id="wishlistExistsMessage"></p>
-          <button id="closeWishlistExistsModal">OK</button>
-        </div>
-      `;
-      document.body.appendChild(modal);
-
-      modal.querySelector("#closeWishlistExistsModal").addEventListener("click", () => {
-        modal.style.display = "none";
-      });
-    }
-
-    modal.querySelector("#wishlistExistsMessage").innerText = `${productName} is already in your wishlist.`;
-    modal.style.display = "flex";
   }
 }

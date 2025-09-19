@@ -1,14 +1,11 @@
 import { SellerDashboard } from "../../sellerPackage/scripts/dashboard.js";   
 import { Products } from "../../productsPackage/products.js";
-import { Cart } from "../../productsPackage/cart.js";
-import { Wishlist } from "../../productsPackage/wishlist.js";
-import { ManageOrders } from "../../productsPackage/manageOrders.js";
+import { cart, wishlist, orders, BuyerDashboard } from "../../buyerPackage/dashboard.js"; // ✅ use singletons
 import { Affiliate } from "../../sellerPackage/scripts/manageAffiliate.js";
 import { Orders } from "../../sellerPackage/scripts/orders.js";
 import { Promotions } from "../../sellerPackage/scripts/promotions.js";
 import { Earnings } from "../../sellerPackage/scripts/earnings.js";
 import { Profile } from "../scripts/profile.js"; 
-import { BuyerDashboard } from "../../buyerPackage/dashboard.js";
 import { Payment } from "../../paymentPackage/payment.js";    
 
 class Main {
@@ -70,16 +67,11 @@ class Main {
 
     nav.innerHTML = "";
 
-    // 👉 Shared instances for BUYER
-    let cart, wishlist, orders, products, buyerDashboard;
+    let products, buyerDashboard;
     if (role === "buyer") {
-      cart = new Cart();
-      wishlist = new Wishlist();
-      orders = new ManageOrders();
       products = new Products(role, cart, wishlist);
       buyerDashboard = new BuyerDashboard(cart, wishlist, orders);
 
-      // keep dashboard updated automatically
       cart.onChange = () => buyerDashboard.refreshMetrics();
       wishlist.onChange = () => buyerDashboard.refreshMetrics();
       orders.onChange = () => buyerDashboard.refreshMetrics();
@@ -171,28 +163,22 @@ class Main {
           case "affiliate":
             switch (item.text) {
               case "Home":
-                document.querySelector(".dashboard-main").innerHTML =
-                  "<h2>Affiliate Home</h2>";
+                document.querySelector(".dashboard-main").innerHTML = "<h2>Affiliate Home</h2>";
                 break;
               case "Select Products":
-                document.querySelector(".dashboard-main").innerHTML =
-                  "<h2>Select Products</h2>";
+                document.querySelector(".dashboard-main").innerHTML = "<h2>Select Products</h2>";
                 break;
               case "Manage shop":
-                document.querySelector(".dashboard-main").innerHTML =
-                  "<h2>Manage Shop</h2>";
+                document.querySelector(".dashboard-main").innerHTML = "<h2>Manage Shop</h2>";
                 break;
               case "Track Commission":
-                document.querySelector(".dashboard-main").innerHTML =
-                  "<h2>Track Commission</h2>";
+                document.querySelector(".dashboard-main").innerHTML = "<h2>Track Commission</h2>";
                 break;
               case "Social Sharing":
-                document.querySelector(".dashboard-main").innerHTML =
-                  "<h2>Social Sharing</h2>";
+                document.querySelector(".dashboard-main").innerHTML = "<h2>Social Sharing</h2>";
                 break;
               case "Profile":
-                document.querySelector(".dashboard-main").innerHTML =
-                  new Profile().render();
+                document.querySelector(".dashboard-main").innerHTML = new Profile().render();
                 break;
             }
             break;
@@ -200,36 +186,28 @@ class Main {
           case "admin":
             switch (item.text) {
               case "Home":
-                document.querySelector(".dashboard-main").innerHTML =
-                  "<h2>Admin Home</h2>";
+                document.querySelector(".dashboard-main").innerHTML = "<h2>Admin Home</h2>";
                 break;
               case "Manage Users":
-                document.querySelector(".dashboard-main").innerHTML =
-                  "<h2>Manage Users</h2>";
+                document.querySelector(".dashboard-main").innerHTML = "<h2>Manage Users</h2>";
                 break;
               case "Product moderation":
-                document.querySelector(".dashboard-main").innerHTML =
-                  "<h2>Product Moderation</h2>";
+                document.querySelector(".dashboard-main").innerHTML = "<h2>Product Moderation</h2>";
                 break;
               case "Order Oversight":
-                document.querySelector(".dashboard-main").innerHTML =
-                  "<h2>Order Oversight</h2>";
+                document.querySelector(".dashboard-main").innerHTML = "<h2>Order Oversight</h2>";
                 break;
               case "Commission Control":
-                document.querySelector(".dashboard-main").innerHTML =
-                  "<h2>Commission Control</h2>";
+                document.querySelector(".dashboard-main").innerHTML = "<h2>Commission Control</h2>";
                 break;
               case "Analytics":
-                document.querySelector(".dashboard-main").innerHTML =
-                  "<h2>Analytics</h2>";
+                document.querySelector(".dashboard-main").innerHTML = "<h2>Analytics</h2>";
                 break;
               case "System Management":
-                document.querySelector(".dashboard-main").innerHTML =
-                  "<h2>System Management</h2>";
+                document.querySelector(".dashboard-main").innerHTML = "<h2>System Management</h2>";
                 break;
               case "Profile":
-                document.querySelector(".dashboard-main").innerHTML =
-                  new Profile().render();
+                document.querySelector(".dashboard-main").innerHTML = new Profile().render();
                 break;
             }
             break;
@@ -237,7 +215,7 @@ class Main {
       });
     });
 
-    // 👉 Auto-load the first dashboard (Home)
+    // Auto-load the first dashboard (Home)
     const firstButton = nav.querySelector("button");
     if (firstButton) firstButton.click();
   }

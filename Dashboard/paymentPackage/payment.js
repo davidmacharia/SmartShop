@@ -1,17 +1,17 @@
-// payment.js
 import { getTax } from "../taxesPackage/taxes.js";
+import { getPaymentsMethods } from "./managePayments.js";
+import { changeCurrency } from "./managePayments.js";
 
 export class Payment {
   constructor(order, paymentMethods = []) {
     this.order = order;
     this.paymentMethods = paymentMethods.length
       ? paymentMethods
-      : ["Credit Card", "PayPal", "M-Pesa", "Bank Transfer"];
-
+      : getPaymentsMethods();
+    this.currency = changeCurrency();
     this.history = JSON.parse(localStorage.getItem("paymentHistory")) || [];
   }
 
-  // --- Helpers ---
   getSubtotal() {
     return this.order.items.reduce((sum, item) => sum + item.price * item.qty, 0);
   }
@@ -34,43 +34,33 @@ export class Payment {
     this.updateHistoryTable();
   }
 
-  // --- Render Page ---
   renderPaymentPage() {
     return `
       <h2 class="heading">💳 Payment</h2>
       <hr width="100%">
-
       <div class="payment-container">
-        <!-- Receipt -->
         <section class="receipt">
-          <h3>🧾 Receipt</h3>
+          <h3>🧾 SmartShop Receipt</h3>
           <ul>
-            ${this.order.items
-              .map(
-                (item) =>
-                  `<li><span>${item.qty} × ${item.name}</span> <span>$${(
-                    item.price * item.qty
-                  ).toFixed(2)}</span></li>`
-              )
-              .join("")}
+            ${this.order.items.map(
+              (item) =>
+                `<li><span>${item.qty} × ${item.name}</span> <span>$${(
+                  item.price * item.qty
+                ).toFixed(2)}</span></li>`
+            ).join("")}
           </ul>
           <div class="totals">
-            <p><span>Subtotal:</span> <span>$${this.getSubtotal().toFixed(2)}</span></p>
-            <p><span>Tax:</span> <span>$${this.getTaxAmount().toFixed(2)}</span></p>
-            <p><strong>Total Due:</strong> <strong>$${this.getFinalTotal().toFixed(
-              2
-            )}</strong></p>
+            <p><span>Subtotal:</span> <span>${this.currency}${this.getSubtotal().toFixed(2)}</span></p>
+            <p><span>Tax:</span> <span>${this.currency}${this.getTaxAmount().toFixed(2)}</span></p>
+            <p><strong>Total Due:</strong> <strong>${this.currency}${this.getFinalTotal().toFixed(2)}</strong></p>
           </div>
           <button class="print-btn" id="printReceipt">🖨 Print Receipt</button>
         </section>
 
-        <!-- Payment Methods -->
         <section class="payment-methods">
           <h3>Select Payment Method</h3>
           <select id="paymentSelect">
-            ${this.paymentMethods
-              .map((method) => `<option value="${method}">${method}</option>`)
-              .join("")}
+            ${this.paymentMethods.map(method => `<option value="${method}">${method}</option>`).join("")}
           </select>
           <div class="payment-actions">
             <button class="confirm" id="confirmPayment">
@@ -80,7 +70,6 @@ export class Payment {
         </section>
       </div>
 
-      <!-- Payment History -->
       <section class="payment-history">
         <h3>📜 Payment History</h3>
         <table id="paymentHistoryTable">
@@ -101,7 +90,6 @@ export class Payment {
         <button class="clear-history" id="clearHistory">🗑 Clear History</button>
       </section>
 
-      <!-- Success Modal -->
       <div id="paymentSuccessModal" class="modal">
         <div class="modal-content">
           <h2>✅ Payment Successful</h2>
@@ -112,7 +100,6 @@ export class Payment {
     `;
   }
 
-  // --- Controls ---
   initControls() {
     const confirmBtn = document.getElementById("confirmPayment");
     const modal = document.getElementById("paymentSuccessModal");
@@ -125,13 +112,12 @@ export class Payment {
       return;
     }
 
-    // Confirm Payment
     confirmBtn.onclick = () => {
       const selectedMethod = document.getElementById("paymentSelect").value;
       const total = this.getFinalTotal().toFixed(2);
 
       const paymentRecord = {
-        id: Date.now(),
+        id: this.order.id,
         date: new Date().toLocaleString(),
         method: selectedMethod,
         amount: total,
@@ -142,28 +128,24 @@ export class Payment {
 
       document.getElementById(
         "paymentMessage"
-      ).textContent = `Your payment of $${total} was made via ${selectedMethod}.`;
+      ).textContent = `Your payment of ${this.currency} ${total} was made via ${selectedMethod}.`;
 
       modal.style.display = "flex";
     };
 
-    // Close modal & update history
     closeBtn.onclick = () => {
       modal.style.display = "none";
       this.updateHistoryTable();
     };
 
-    // Print receipt
     if (printBtn) {
       printBtn.onclick = () => window.print();
     }
 
-    // Clear history
     if (clearHistoryBtn) {
       clearHistoryBtn.onclick = () => this.clearHistory();
     }
 
-    // Close modal when clicking outside
     window.onclick = (e) => {
       if (e.target === modal) {
         modal.style.display = "none";
@@ -171,11 +153,9 @@ export class Payment {
       }
     };
 
-    // Load existing history
     this.updateHistoryTable();
   }
 
-  // --- Update History Table ---
   updateHistoryTable() {
     const tbody = document.querySelector("#paymentHistoryTable tbody");
     tbody.innerHTML = "";
@@ -186,12 +166,12 @@ export class Payment {
       return;
     }
 
-    this.history.forEach((record) => {
+    this.history.forEach(record => {
       const row = document.createElement("tr");
       row.innerHTML = `
         <td>${record.date}</td>
         <td>${record.method}</td>
-        <td>$${record.amount}</td>
+        <td>${this.currency}${record.amount}</td>
         <td>${record.id}</td>
       `;
       tbody.appendChild(row);

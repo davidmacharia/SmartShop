@@ -1,3 +1,4 @@
+import { changeCurrency } from "../paymentPackage/managePayments.js";
 export class Products {
   constructor(role, cart = null, wishlist = null) {
     this.items = [
@@ -7,7 +8,7 @@ export class Products {
     ];
     this.currentProduct = null;
     this.role = role;
-
+    this.currency = changeCurrency();
     // Shared cart & wishlist (buyer only)
     this.cart = cart;
     this.wishlist = wishlist;
@@ -31,8 +32,8 @@ export class Products {
         <div class="product-card" data-index="${index}">
           <img src="${item.image}" alt="${item.name}" />
           <div class="product-info">
-            <h3>${item.name}</h3>
-            <p class="price">Price: $${item.price}</p>
+            <h3> ${item.name}</h3>
+            <p class="price">Price: ${this.currency} ${item.price}</p>
       `;
 
       if (this.role === "buyer") {
