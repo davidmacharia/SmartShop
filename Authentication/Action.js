@@ -3,7 +3,7 @@ import { Products } from "../Dashboard/productsPackage/products.js";
 class SendData {
     async SubmitData(data) {
         try {
-            const res = await fetch("http://127.0.0.1/serverside/", {
+            const res = await fetch("http://192.168.137.146/serverside/", {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
@@ -108,8 +108,24 @@ class SendData {
 //################################################################################
 document.addEventListener("DOMContentLoaded", () => {
     const params = new URLSearchParams(window.location.search);
-    const form = document.querySelector("form"); // safer: select only one form per page
+    const form = document.querySelector("form");
     if (!form) return;
+
+    // Next/Back button logic for registration
+    const nextBtn = document.getElementById("nextphase");
+    const backBtn = document.getElementById("backBtn");
+    if (nextBtn) {
+        nextBtn.addEventListener("click", () => {
+            document.getElementById("phaseone").style.display = "none";
+            document.getElementById("phasetwo").style.display = "";
+        });
+    }
+    if (backBtn) {
+        backBtn.addEventListener("click", () => {
+            document.getElementById("phaseone").style.display = "";
+            document.getElementById("phasetwo").style.display = "none";
+        });
+    }
 
     form.addEventListener("submit", (e) => {
         e.preventDefault();

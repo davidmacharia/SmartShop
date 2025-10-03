@@ -7,7 +7,6 @@ import { Payment } from "../paymentPackage/payment.js";
 import { changeCurrency } from "../paymentPackage/managePayments.js";
 
 // --- Shared instances (singleton style) ---
-// ✅ Make sure Cart knows about ManageOrders
 export const orders = new ManageOrders();
 export const cart = new Cart(orders);
 export const wishlist = new Wishlist(cart);
@@ -56,8 +55,16 @@ export class BuyerDashboard {
     });
 
     text += `</section>`;
-    text += this.products.showProducts();
+
+    // recommendations will render dynamically
+    text += this.products.renderRecommendations();
+
     return text;
+  }
+
+  attachControls() {
+    // ✅ Attach controls AFTER DOM exists
+    this.products.productControls();
   }
 
   refreshMetrics() {

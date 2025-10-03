@@ -1,20 +1,38 @@
 import { changeCurrency } from "../paymentPackage/managePayments.js";
+
 export class Wishlist {
   constructor(cart = null) {
-    this.items = [];
+    this.storageKey = "wishlist"; // ✅ localStorage key
+    this.items = this.loadFromStorage();
     this.cart = cart; // shared cart instance
     this.onChange = null;
     this.currency = changeCurrency();
   }
 
+  /* ------------------------------
+     🔄 Local Storage
+  ------------------------------ */
+  saveToStorage() {
+    localStorage.setItem(this.storageKey, JSON.stringify(this.items));
+  }
+
+  loadFromStorage() {
+    return JSON.parse(localStorage.getItem(this.storageKey)) || [];
+  }
+
+  /* ------------------------------
+     🛍️ Core Wishlist Ops
+  ------------------------------ */
   addItem(item) {
     this.items.push(item);
+    this.saveToStorage();
     this.triggerChange();
     this.renderToDashboard();
   }
 
   removeItem(index) {
     this.items.splice(index, 1);
+    this.saveToStorage();
     this.triggerChange();
     this.renderToDashboard();
   }
@@ -24,6 +42,7 @@ export class Wishlist {
     if (item && this.cart) {
       this.cart.addItem(item);
     }
+    this.saveToStorage();
     this.triggerChange();
     this.renderToDashboard();
   }
@@ -32,6 +51,9 @@ export class Wishlist {
     if (this.onChange) this.onChange();
   }
 
+  /* ------------------------------
+     🖼️ UI Rendering
+  ------------------------------ */
   renderWishlist() {
     let text = `<h2 class="heading">❤️ Wishlist (${this.items.length})</h2><hr width="100%">`;
 
@@ -63,17 +85,20 @@ export class Wishlist {
     }
   }
 
+  /* ------------------------------
+     🎛️ Controls
+  ------------------------------ */
   initControls() {
     document.querySelectorAll(".move-to-cart").forEach(btn => {
       btn.addEventListener("click", e => {
-        const i = Number(e.target.dataset.index); // ✅ make sure it's a number
+        const i = Number(e.target.dataset.index);
         this.moveToCart(i);
       });
     });
 
     document.querySelectorAll(".remove-wishlist").forEach(btn => {
       btn.addEventListener("click", e => {
-        const i = Number(e.target.dataset.index); // ✅ make sure it's a number
+        const i = Number(e.target.dataset.index);
         this.removeItem(i);
       });
     });

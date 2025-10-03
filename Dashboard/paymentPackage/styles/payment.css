@@ -1,3 +1,26 @@
+@media (max-width: 600px) {
+  .payment-container {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+  .receipt, .payment-methods {
+    max-width: 98vw;
+    padding: 0.7rem;
+    font-size: 0.97rem;
+    border-radius: 6px;
+  }
+  .payment-history table {
+    font-size: 0.95rem;
+    overflow-x: auto;
+    display: block;
+  }
+  .modal-content {
+    width: 98vw;
+    padding: 10px;
+    border-radius: 8px;
+  }
+}
 /* ========================
    PAYMENT PAGE LAYOUT
 ======================== */

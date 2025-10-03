@@ -1,3 +1,22 @@
+@media (max-width: 900px) {
+  .profile-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .profile-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .profile-avatar {
+    width: 70px;
+    height: 70px;
+  }
+  .profile-section {
+    padding: 10px;
+    font-size: 0.97rem;
+  }
+}
 /* ==========================
    Seller Profile Page
    ========================== */

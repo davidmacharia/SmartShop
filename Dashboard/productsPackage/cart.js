@@ -1,41 +1,60 @@
 import { changeCurrency } from "../paymentPackage/managePayments.js";
+
 export class Cart {
   constructor(orders = null) {
-    this.items = [];
+    // ✅ Restore saved cart from localStorage
+    const savedCart = JSON.parse(localStorage.getItem("cartItems")) || {};
+    this.items = savedCart.items || [];
+    this.customerId = savedCart.customerId || null;
+
     this.onChange = null;
-    this.manageOrders = orders; // shared ManageOrders instance
+    this.manageOrders = orders;
     this.currency = changeCurrency();
   }
 
- addItem(item) {
-  const existing = this.items.find(i => i.name === item.name);
-  if (existing) {
-    existing.qty += item.qty ?? 1;   // increment if already exists
-  } else {
-    this.items.push({ ...item, qty: item.qty ?? 1 }); // ensure qty always set
+  saveCart() {
+    localStorage.setItem("cartItems", JSON.stringify({
+      items: this.items,
+      customerId: this.customerId
+    }));
   }
-  this.triggerChange();
-  this.renderToDashboard();
-}
- // ✅ New method to calculate total
+
+  setCustomerId(id) {
+    this.customerId = id;
+    this.saveCart();
+  }
+
+  addItem(item) {
+    const existing = this.items.find(i => i.name === item.name);
+    if (existing) {
+      existing.qty += item.qty ?? 1;
+    } else {
+      this.items.push({ ...item, qty: item.qty ?? 1 });
+    }
+    this.triggerChange();
+    this.saveCart();
+    this.renderToDashboard();
+  }
+
   getTotal() {
     return this.items.reduce((sum, i) => sum + i.price * (i.qty ?? 1), 0);
   }
 
-
   removeItem(index) {
     this.items.splice(index, 1);
     this.triggerChange();
+    this.saveCart();
     this.renderToDashboard();
   }
 
   clearCart() {
     this.items = [];
     this.triggerChange();
+    this.saveCart();
     this.renderToDashboard();
   }
 
-  placeOrder() {
+  placeOrder(customerId = this.customerId) {
     if (this.items.length === 0) {
       this.showModal("Cart Empty", "Your cart is empty. Add items before placing an order.");
       return;
@@ -43,9 +62,10 @@ export class Cart {
 
     const order = {
       id: Date.now(),
+      customerId: customerId || null,
       date: new Date().toLocaleString(),
       status: "Pending",
-      total: this.items.reduce((sum, i) => sum + i.price * (i.qty ?? 1), 0),
+      total: this.getTotal(),
       items: [...this.items]
     };
 
@@ -53,10 +73,8 @@ export class Cart {
       this.manageOrders.addOrder(order);
     }
 
-    // ✅ clear cart first
     this.clearCart();
 
-    // ✅ show modal and jump to orders on close
     this.showModal("✅ Order Placed", `Order #${order.id} has been placed successfully!`, () => {
       const container = document.querySelector(".dashboard-main");
       if (container && this.manageOrders) {
@@ -92,7 +110,7 @@ export class Cart {
 
     text += `
       <div class="cart-summary">
-        <p><strong>Total:</strong> ${this.currency} ${this.items.reduce((s, i) => s + i.price * (i.qty ?? 1), 0)}</p>
+        <p><strong>Total:</strong> ${this.currency} ${this.getTotal()}</p>
         <button id="placeOrderBtn">✅ Place Order</button>
       </div>
     `;
@@ -118,11 +136,10 @@ export class Cart {
 
     const placeOrderBtn = document.getElementById("placeOrderBtn");
     if (placeOrderBtn) {
-      placeOrderBtn.addEventListener("click", () => this.placeOrder());
+      placeOrderBtn.addEventListener("click", () => this.placeOrder(this.customerId));
     }
   }
 
-  // 🔔 reusable modal system with callback
   showModal(title, message, onClose = null) {
     let modal = document.getElementById("orderModal");
 
@@ -147,7 +164,7 @@ export class Cart {
     const closeBtn = modal.querySelector("#closeOrderModal");
     closeBtn.onclick = () => {
       modal.style.display = "none";
-      if (onClose) onClose(); // 👈 jump to Orders after modal closes
+      if (onClose) onClose();
     };
   }
 }

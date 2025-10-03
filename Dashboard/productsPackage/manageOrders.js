@@ -3,14 +3,34 @@ import { changeCurrency } from "../paymentPackage/managePayments.js";
 
 export class ManageOrders {
   constructor() {
-    this.orders = [];
     this.onChange = null;
     this.currency = changeCurrency();
+
+    const savedOrders = JSON.parse(localStorage.getItem("orders")) || [];
+    this.orders = savedOrders.map(o => ({
+      ...o,
+      customerId: o.customerId || null
+    }));
+  }
+
+  saveOrders() {
+    localStorage.setItem("orders", JSON.stringify(this.orders));
   }
 
   addOrder(order) {
+    if (!order.customerId) order.customerId = null;
     this.orders.push(order);
+    this.saveOrders();
     this.triggerChange();
+  }
+
+  updateOrder(id, newData) {
+    const index = this.orders.findIndex(o => o.id == id);
+    if (index !== -1) {
+      this.orders[index] = { ...this.orders[index], ...newData };
+      this.saveOrders();
+      this.triggerChange();
+    }
   }
 
   triggerChange() {
@@ -29,6 +49,7 @@ export class ManageOrders {
       text += `
         <div class="order-card">
           <h3>Order #${order.id}</h3>
+          <p><strong>Customer ID:</strong> ${order.customerId || "N/A"}</p>
           <p>Date: ${order.date}</p>
           <p>Status: ${order.status}</p>
           <p>Total: ${this.currency} ${order.total}</p>
@@ -53,17 +74,24 @@ export class ManageOrders {
   }
 
   initControls() {
-    document.querySelectorAll(".pay-now").forEach(btn => {
-      btn.addEventListener("click", e => {
+    const container = document.querySelector(".dashboard-main");
+    if (!container) return;
+
+    container.addEventListener("click", (e) => {
+      if (e.target.classList.contains("pay-now")) {
         const orderId = e.target.dataset.id;
         const order = this.orders.find(o => o.id == orderId);
         if (order) {
           const payment = new Payment(order);
-          const container = document.querySelector(".dashboard-main");
+
+          payment.onComplete = () => {
+            this.updateOrder(order.id, { status: "Paid" });
+          };
+
           container.innerHTML = payment.renderPaymentPage();
           payment.initControls();
         }
-      });
+      }
     });
   }
 }

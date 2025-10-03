@@ -1,3 +1,23 @@
+@media (max-width: 600px) {
+  .orders-list {
+    gap: 10px;
+    margin: 8px 0;
+  }
+  .order-card {
+    padding: 10px 8px;
+    font-size: 0.97rem;
+    border-radius: 8px;
+  }
+  .order-card h3 {
+    font-size: 0.97rem;
+  }
+  .order-card p {
+    font-size: 0.92rem;
+  }
+  .order-card li {
+    font-size: 0.92rem;
+  }
+}
 /* ===========================
    ManageOrders / Orders Page
    =========================== */

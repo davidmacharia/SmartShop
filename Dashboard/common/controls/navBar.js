@@ -16,13 +16,15 @@ class Main {
     document.getElementById("Welcomemessage").innerHTML =
       "Welcome " + (name ?? "Guest") + "<br>  " + role;
 
-    const nav = document.querySelector(navBar);
+  const nav = document.querySelector(navBar);
+  nav.style.height = document.documentElement.scrollHeight + "px";
 
     let list = [];
     switch (role) {
       case "buyer":
         list = [
           { text: "Home", icon: "fa-house" },
+          { text: "Marketplace", icon: "fa-boxes-stacked" },
           { text: "Cart", icon: "fa-shopping-cart" },
           { text: "Orders", icon: "fa-box" },
           { text: "Wish List", icon: "fa-heart" },
@@ -131,6 +133,11 @@ class Main {
               case "Home":
                 document.querySelector(".dashboard-main").innerHTML =
                   buyerDashboard.initBuyerDashboard();
+                products.productControls();
+                break;
+                case "Marketplace":
+                document.querySelector(".dashboard-main").innerHTML =
+                  products.showProducts();
                 products.productControls();
                 break;
               case "Cart":

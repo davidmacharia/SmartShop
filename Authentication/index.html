@@ -3,41 +3,38 @@
 <head>
 
   <title>Login</title>
-<style>@import url("index.css");</style>
+<link rel="stylesheet" href="index.css">
 <script type ="module" src = "Action.js"></script>
 </head>
 <body>
- <form id="login">
-    <div class="container">
-      shop now
-      <p>🛒 </p>
-      <div class="logo"><p>At</p></div>
-      <p >Home</p>
+  <form id="login">
+    <div class="container" style="background: #fff; box-shadow: 0 8px 32px 0 rgba(31,38,135,0.15); border-radius: 1.2rem; padding: 2rem 1.2rem; margin: 40px auto; max-width: 420px; width: 90vw;">
+      <div style="display: flex; flex-direction: column; align-items: center;">
+        <div class="logo" style="background: linear-gradient(135deg, #6366f1 60%, #a5b4fc 100%); color: #fff; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; box-shadow: 0 2px 8px rgba(99,102,241,0.18); margin-bottom: 1rem;">🛒</div>
+        <h2 style="color: #22223b; margin-bottom: 1.2rem; font-weight: 700; letter-spacing: 0.02em;">Login to Your Account</h2>
       </div>
-      <h3 >Login to Your Account</h3>
-      <div id = "error" class="error"></div>
-      <div class="input-group" >
-      <label for="email" class="label">Email</label>
-      <input type="email" id="email" name="email"  placeholder="example@gmail.com" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
-      </div>
-      <div id = "error2" class="error"></div>
+      <div id="error" class="error"></div>
       <div class="input-group">
-      <label for="password" >Password</label>
-      <input type="password" id="password" name="password"  placeholder="Enter your password" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+        <label for="email" class="label" style="color: #374151; font-size: 1rem; font-weight: 500;">Email</label>
+        <input type="email" id="email" name="email" class="input-full" placeholder="example@gmail.com" style="background: #f8fafc; border: 1.5px solid #c7d2fe; border-radius: 0.7rem; font-size: 1rem;">
       </div>
-      <div class="input-group remember-me">
-      <label for="remember" style="color: #333;"></label>
-        <input type="checkbox" id="remember" name="remember" style="margin-right: 5px;"> Remember Me
-      </label>
+      <div id="error2" class="error"></div>
+      <div class="input-group">
+        <label for="password" style="color: #374151; font-size: 1rem; font-weight: 500;">Password</label>
+        <input type="password" id="password" name="password" class="input-full" placeholder="Enter your password" style="background: #f8fafc; border: 1.5px solid #c7d2fe; border-radius: 0.7rem; font-size: 1rem;">
       </div>
-      <div class="links" style="text-align: right;"></div>
-      <a href="forgot.html" style="color: #007BFF;margin-left: 30%; text-decoration: none;margin-top:-25px;position: absolute;">Forgot Password?</a>
+      <div class="input-group remember-me" style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+        <input type="checkbox" id="remember" name="remember" style="margin-right: 8px;">
+        <label for="remember" style="margin-bottom: 0; color: #6366f1;">Remember Me</label>
       </div>
-      <div class="button" style="text-align: center; margin-bottom: 10px;"></div>
-      <input type="submit" value="Login" >
+      <div class="links" style="text-align: right; margin-bottom: 0.5rem;">
+        <a href="forgot.html" class="link-login" style="color: #6366f1;">Forgot Password?</a>
       </div>
-      <div class="links" style="text-align: center;"></div>
-      <p style="color: #555;margin-left:20%; text-decoration: none;margin-top:0%;position: absolute;">Don't have an account? <a href="register.html" style="color: #007BFF; text-decoration: none;">Create Account</a></p>
+      <div class="button">
+        <input type="submit" value="Login" style="background: linear-gradient(90deg, #6366f1 60%, #a5b4fc 100%); color: #fff; font-weight: 600; border: none; border-radius: 1.2rem; padding: 0.8rem 2.2rem; margin: 0.5rem 0; width: 100%; font-size: 1.1rem; cursor: pointer; box-shadow: 0 2px 8px rgba(99,102,241,0.10);">
+      </div>
+      <div class="links center-link" style="text-align: center; margin-top: 1.5rem;">
+        <p style="color: #555;">Don't have an account? <a href="register.html" class="link-login" style="color: #6366f1;">Create Account</a></p>
       </div>
     </div>
   </form>

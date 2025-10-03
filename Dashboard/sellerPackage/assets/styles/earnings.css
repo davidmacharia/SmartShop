@@ -1,3 +1,18 @@
+@media (max-width: 900px) {
+  .earnings-page .metrics {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .earnings-page {
+    padding: 10px;
+    font-size: 0.97rem;
+  }
+  .payout-list table {
+    font-size: 0.95rem;
+    overflow-x: auto;
+    display: block;
+  }
+}
 /* ==========================
    Earnings & Payouts Page
    ========================== */

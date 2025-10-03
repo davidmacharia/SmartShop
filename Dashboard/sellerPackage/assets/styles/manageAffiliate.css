@@ -1,3 +1,19 @@
+@media (max-width: 900px) {
+  .affiliate-page {
+    padding: 10px;
+    gap: 10px;
+    font-size: 0.97rem;
+  }
+  .affiliate-links .affiliate-card {
+    flex-direction: column;
+    gap: 5px;
+  }
+  .affiliate-list table {
+    font-size: 0.95rem;
+    overflow-x: auto;
+    display: block;
+  }
+}
 /* ================== AFFILIATE PAGE ================== */
 .affiliate-page {
   background: #fff;
