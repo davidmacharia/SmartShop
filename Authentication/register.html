@@ -1,66 +1,83 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>maziwa</title>
-  <link rel="stylesheet" href="index.css">
-  <script  type = "module" src="Action.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create New Account - India Pages</title>
+  <link rel="stylesheet" href="index.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
-<body >
-  <form id="register">
-  <div class="container" style="background: #fff; box-shadow: 0 8px 32px 0 rgba(31,38,135,0.15); border-radius: 1.2rem; padding: 2rem 1.2rem; margin: 5vw auto; max-width: 98vw; width: 100%; min-width: 0;">
-      <div style="display: flex; flex-direction: column; align-items: center;">
-        <div class="logo" style="background: linear-gradient(135deg, #6366f1 60%, #a5b4fc 100%); color: #fff; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; box-shadow: 0 2px 8px rgba(99,102,241,0.18); margin-bottom: 1rem;">🛒</div>
-        <h2 style="color: #22223b; margin-bottom: 1.2rem; font-weight: 700; letter-spacing: 0.02em;">Create an Account</h2>
+
+<body>
+  <div class="container">
+    <!-- LEFT SIDE -->
+    <div class="left-section">
+      <div class="text-content">
+        <h2>Get all your buying problems<br>solved today</h2>
+        <p>Join IndiaPages and get connected to different suppliers across the globe</p>
+        
       </div>
-      <div id="phaseone">
-        <div id="error" class="error"></div>
-        <div class="input-group">
-          <label for="username" style="color: #374151; font-size: 1rem; font-weight: 500;">Username</label>
-          <input type="username" id="username" name="username" class="input-full" style="background: #f8fafc; border: 1.5px solid #c7d2fe; border-radius: 0.7rem; font-size: 1rem;">
-        </div>
-        <div class="input-group">
-          <label for="email" class="label" style="color: #374151; font-size: 1rem; font-weight: 500;">Email</label>
-          <input type="email" id="email" name="email" class="input-full" placeholder="example@gmail.com" style="background: #f8fafc; border: 1.5px solid #c7d2fe; border-radius: 0.7rem; font-size: 1rem;">
-        </div>
-        <div class="input-group">
-          <label for="CountryCode" style="color: #374151; font-size: 1rem; font-weight: 500;">Country Code</label>
-          <select name="CountryCode" style="background: #f8fafc; border: 1.5px solid #c7d2fe; border-radius: 0.7rem; font-size: 1rem;">
-            <option>+254</option>
-            <option>+171</option>
-          </select>
-        </div>
-        <div class="input-group">
-          <label for="phone" style="color: #374151; font-size: 1rem; font-weight: 500;">Phone Number</label>
-          <input type="text" placeholder="Enter phone Number" name="phone" class="input-full" style="background: #f8fafc; border: 1.5px solid #c7d2fe; border-radius: 0.7rem; font-size: 1rem;">
-        </div>
-        <div class="button">
-          <input type="button" id="nextphase" value="Next" class="btn-next" style="background: linear-gradient(90deg, #6366f1 60%, #a5b4fc 100%); color: #fff; font-weight: 600; border: none; border-radius: 1.2rem; padding: 0.8rem 2.2rem; margin: 0.5rem 0; width: 100%; font-size: 1.1rem; cursor: pointer; box-shadow: 0 2px 8px rgba(99,102,241,0.10);">
-        </div>
-      </div>
-      <div id="phasetwo" style="display: none;">
-        <div id="error2" class="error"></div>
-        <div class="input-group">
-          <label for="password" style="color: #374151; font-size: 1rem; font-weight: 500;">Password</label>
-          <input type="password" id="password" name="password" class="input-full" placeholder="Enter your password" style="background: #f8fafc; border: 1.5px solid #c7d2fe; border-radius: 0.7rem; font-size: 1rem;">
-        </div>
-        <div class="input-group">
-          <label for="confirm" style="color: #374151; font-size: 1rem; font-weight: 500;">Confirm Password</label>
-          <input type="password" id="confirm" name="confirmpassword" class="input-full" placeholder="Confirm password" style="background: #f8fafc; border: 1.5px solid #c7d2fe; border-radius: 0.7rem; font-size: 1rem;">
-        </div>
-        <div class="button">
-          <input type="button" id="backBtn" class="btn-back" value="Back" style="background: #22223b; color: #fff; font-weight: 600; border: none; border-radius: 1.2rem; padding: 0.8rem 2.2rem; margin: 0.5rem 0; width: 100%; font-size: 1.1rem; cursor: pointer; box-shadow: 0 2px 8px rgba(99,102,241,0.10);">
-        </div>
-        <div class="button">
-          <input type="submit" value="Register" style="background: linear-gradient(90deg, #6366f1 60%, #a5b4fc 100%); color: #fff; font-weight: 600; border: none; border-radius: 1.2rem; padding: 0.8rem 2.2rem; margin: 0.5rem 0; width: 100%; font-size: 1.1rem; cursor: pointer; box-shadow: 0 2px 8px rgba(99,102,241,0.10);">
-        </div>
-      </div>
-      <div class="links center-link" style="text-align: center; margin-top: 1.5rem;">
-        <p style="color: #555;">Have an account? <a href="index.html" class="link-login" style="color: #6366f1;">Login</a></p>
+      
+      <div class="cart-graphic">
+        <img src="assets/images/cart.png" alt="Shopping Cart" />
       </div>
     </div>
-  </form>
-  <script>
-    // ...existing code...
-  </script>
+
+    <!-- RIGHT SIDE -->
+    <div class="right-section">
+      <div class="logo">
+        <img src="assets/images/smartshopLogo.png" alt="smartshop" />
+      </div>
+
+      <!-- ✅ Registration Form -->
+      <form id="register">
+        <h2>Create new account</h2>
+
+        <!-- ✅ PHASE ONE -->
+        <div id="phaseone">
+          <label for="username">Name</label>
+          <input type="text" name="username" id="username" placeholder="Enter your name" required>
+
+          <label for="email">Email Address</label>
+          <input type="email" name="email" id="email" placeholder="example@gmail.com" required>
+
+          <label for="phone">Phone Number</label>
+          <input type="tel" name="phone" id="phone" placeholder="+91 9876543210" required>
+
+          <button type="button" id="nextphase" class="signup-btn">Next →</button>
+        </div>
+
+        <!-- ✅ PHASE TWO -->
+        <div id="phasetwo" style="display:none;">
+          <label for="password">Password</label>
+          <input type="password" name="password" id="password" placeholder="Enter your password" required>
+
+          <div class="radio-group">
+            <p>Signing As</p>
+            <label><input type="radio" name="role" value="buyer" checked> Buyer</label>
+            <label><input type="radio" name="role" value="supplier"> Supplier</label>
+          </div>
+
+          <button type="button" id="backBtn" class="signup-btn back">← Back</button>
+          <button type="submit" class="signup-btn">Sign Up</button>
+        </div>
+
+        <!-- ✅ Error message container -->
+        <div id="error" class="error"></div>
+
+        <p class="terms">
+          By registering, you agree to the
+          <a href="#">Terms and Conditions</a>
+        </p>
+
+        <p class="login-link">
+          Already registered? <a href="index.html">Login</a>
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ✅ Connect to the JS controller -->
+  <script type="module" src="Action.js"></script>
 </body>
 </html>

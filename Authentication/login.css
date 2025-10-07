@@ -1,0 +1,378 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+body, html {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', Arial, sans-serif;
+  background: #f7f8fa;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: #f9fafb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* === MAIN CONTAINER === */
+.container {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  width: 100vw;
+}
+
+/* === LEFT SIDE (unchanged from your original login) === */
+.left-section {
+  flex: 1;
+  background: linear-gradient(180deg, #4B2EF5, #639BFF);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem;
+  text-align: left;
+}
+
+.left-section .content {
+  max-width: 360px;
+}
+
+.left-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.left-section p {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.left-section .illustration {
+  margin-top: 2.5rem;
+  text-align: center;
+}
+
+/* === RIGHT SIDE === */
+.right-section {
+  flex: 1;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+}
+
+/* Logo */
+.logo {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #4B2EF5;
+  display: flex;
+  align-items: center;
+}
+
+/* === FORM CONTAINERS === */
+.form-container {
+  width: 100%;
+  max-width: 400px;
+  background: #fff;
+  border-radius: 1.2rem;
+  box-shadow: 0 8px 32px 0 rgba(31,38,135,0.10);
+  padding: 2rem 1.2rem;
+  margin: 0 auto;
+}
+
+.form-container h2 {
+  color: #4B2EF5;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-weight: 700;
+}
+
+.input-group {
+  margin-bottom: 1.2rem;
+}
+
+.input-group label {
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.3rem;
+  display: block;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  margin: 0.5rem 0 0 0;
+  border: 1.5px solid #c7d2fe;
+  border-radius: 0.7rem;
+  background: #f8fafc;
+  font-size: 1rem;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.input-group input:focus {
+  border: 1.5px solid #4B2EF5;
+  outline: none;
+  box-shadow: 0 0 6px rgba(76,46,245,0.10);
+}
+
+/* Apply same style to register form fields */
+#register label,
+#register input,
+#register select,
+#register textarea {
+  font-family: inherit;
+  font-size: 1rem;
+  border-radius: 0.7rem;
+  box-sizing: border-box;
+}
+#register input,
+#register select,
+#register textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  margin: 0.5rem 0 1.2rem 0;
+  border: 1.5px solid #c7d2fe;
+  background: #f8fafc;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+#register input:focus,
+#register select:focus,
+#register textarea:focus {
+  border: 1.5px solid #4B2EF5;
+  outline: none;
+  box-shadow: 0 0 6px rgba(76,46,245,0.10);
+}
+
+/* === OPTIONS (Remember Me / Forgot Password) === */
+.options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.options a {
+  color: #4B2EF5;
+  text-decoration: none;
+}
+
+.options a:hover {
+  text-decoration: underline;
+}
+
+/* === BUTTONS === */
+.btn,
+.signup-btn {
+  background: linear-gradient(90deg, #4B2EF5 60%, #639BFF 100%);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 1.2rem;
+  padding: 0.8rem 2.2rem;
+  margin: 0.5rem 0;
+  width: 100%;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(76,46,245,0.10);
+  transition: background 0.2s, transform 0.1s;
+}
+
+.btn:hover,
+.signup-btn:hover {
+  background: linear-gradient(90deg, #3a1cda 60%, #639BFF 100%);
+  transform: scale(1.03);
+}
+
+.signup-btn.back {
+  background: #ccc;
+  color: #333;
+  margin-top: 0.8rem;
+}
+
+.signup-btn.back:hover {
+  background: #b3b3b3;
+}
+
+/* === LINKS === */
+.account-link,
+.login-link {
+  text-align: center;
+  margin-top: 1.2rem;
+  font-size: 0.95rem;
+}
+
+.account-link a,
+.login-link a {
+  color: #4B2EF5;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.account-link a:hover,
+.login-link a:hover {
+  text-decoration: underline;
+}
+
+/* === TERMS === */
+.terms {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.terms a {
+  color: #4B2EF5;
+  text-decoration: none;
+}
+
+/* === RADIO GROUP (Register Role) === */
+.radio-group {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.radio-group p {
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 0.4rem;
+}
+
+.radio-group label {
+  font-weight: 400;
+  color: #374151;
+  margin-bottom: 0;
+}
+
+/* === PHASE TOGGLE (Register Step 1 & 2) === */
+#phasetwo {
+  display: none;
+}
+
+/* === ANIMATIONS === */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-out {
+  animation: fadeOut 0.4s ease forwards;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(15px); }
+}
+
+/* Smooth toggle between login/register */
+#login-section,
+#register-section {
+  width: 100%;
+  max-width: 400px;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+#login-section.hidden,
+#register-section.hidden {
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column;
+    min-height: unset;
+    width: 100vw;
+  }
+  .left-section {
+    display: none !important;
+  }
+  .right-section {
+    padding: 1rem;
+    min-height: unset;
+    align-items: center;
+  }
+  .form-container {
+    max-width: 98vw;
+    padding: 1rem;
+    margin: 0 auto;
+  }
+  .logo {
+    position: static;
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem !important;
+    text-align: center;
+    width: 100%;
+    justify-content: center;
+  }
+}
+@media (max-width: 600px) {
+  .container {
+    flex-direction: column;
+    width: 100vw;
+    min-height: 100vh;
+  }
+  .left-section {
+    display: none !important;
+  }
+  .right-section {
+    padding: 0.5rem;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .form-container {
+    max-width: 100vw;
+    padding: 0.5rem;
+    border-radius: 0.7rem;
+    box-shadow: 0 2px 8px rgba(76,46,245,0.08);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0 auto;
+  }
+  .logo {
+    position: static;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 1.5rem;
+    font-size: 1.4rem !important;
+    font-weight: 700;
+    color: #4B2EF5;
+    letter-spacing: 0.02em;
+    background: none;
+    z-index: 2;
+  }
+  h2, label, input, button, p {
+    font-size: 1rem !important;
+  }
+}

@@ -67,7 +67,7 @@ class Main {
         break;
     }
 
-    nav.innerHTML = "";
+    nav.innerHTML += "";
 
     let products, buyerDashboard;
     if (role === "buyer") {
